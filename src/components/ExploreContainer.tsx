@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import Form from '@rjsf/core';
 import { JSONSchema7 } from "json-schema";
 import './ExploreContainer.css';
 
 // db caching related:
 import * as RxDB from 'rxdb';
+
+if (window['cordova']) {
+    RxDB.addRxPlugin(require('pouchdb-adapter-cordova-sqlite'));
+} else {
+    RxDB.addRxPlugin(require('pouchdb-adapter-indexeddb'));
+}
 
 // react json schema form related:
 const schema = {
@@ -147,41 +152,32 @@ class ExploreContainer extends Component {
     name: string = '';
     rxjsCollection: RxDB.RxCollection;
 
-    constructor(props) {
+    constructor(props: any) {
         super(props);
 
         this.name = props.name;
     }
 
     async componentDidMount() {
-        ReactDOM.findDOMNode(this).addEventListener('nv-focus', () => await this.createDB());
+        await this.createDB();
     }
 
     createDB = async () => {
-        console.log('inti');
-
-        RxDB.addRxPlugin(require('pouchdb-adapter-cordova-sqlite'));
-
-        console.log('inti 2');
-
         const db = await RxDB.createRxDatabase({
             name: 'mydatabase',
-            adapter: 'cordova-sqlite', // the name of your adapter
+            adapter: 'indexeddb', // the name of your adapter
             ignoreDuplicate: true
         });
-
-        console.log('adapter', db);
-
         const collection = await db.collection({ name: "activities", schema: { ...schema, version: 0 } })
 
         this.rxjsCollection = collection;
-        console.log('db created');
     };
 
-    submitEventHandler = async (event) => {
-        console.log(event);
+
+    submitEventHandler = async (event: any) => {
         const result = await this.rxjsCollection.insert(event.formData);
-        console.log(result);
+        // const results = await this.rxjsCollection.find().exec();
+        // results.map(item => console.log(item.get['activityType']));
     };
 
     render = () => {
