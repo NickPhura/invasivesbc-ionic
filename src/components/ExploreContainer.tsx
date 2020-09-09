@@ -14,81 +14,81 @@ if (window['cordova']) {
 
 // react json schema form related:
 const schema = {
-    "type": "object",
-    "required": [
+    type: "object",
+    required: [
         "activityType",
         "activityTypeData",
         "activitySubType",
         "activitySubTypeData",
         "locationAndGeometry"
     ],
-    "properties": {
-        "activityType": {
-            "type": "string",
-            "title": "Activity Type"
+    properties: {
+        activityType: {
+            type: "string",
+            title: "Activity Type"
         },
-        "activityTypeData": {
-            "type": "object",
-            "title": "Activity Type Data"
+        activityTypeData: {
+            type: "object",
+            title: "Activity Type Data"
         },
-        "activitySubType": {
-            "type": "string",
-            "title": "Activity Sub-Type"
+        activitySubType: {
+            type: "string",
+            title: "Activity Sub-Type"
         },
-        "activitySubTypeData": {
-            "type": "object",
-            "title": "Activity Sub-Type Data"
+        activitySubTypeData: {
+            type: "object",
+            title: "Activity Sub-Type Data"
         },
-        "date": {
-            "type": "string",
-            "title": "Date",
-            "description": "Date in YYYY-MM-DD format"
+        date: {
+            type: "string",
+            title: "Date",
+            description: "Date in YYYY-MM-DD format"
         },
-        "locationAndGeometry": {
-            "type": "object",
-            "additionalProperties": false,
-            "description": "Location and geometry information",
-            "title": "Location and Geometry",
-            "properties": {
-                "anchorPointY": {
-                    "type": "number",
-                    "title": "Anchor Point Y"
+        locationAndGeometry: {
+            type: "object",
+            additionalProperties: false,
+            description: "Location and geometry information",
+            title: "Location and Geometry",
+            properties: {
+                anchorPointY: {
+                    type: "number",
+                    title: "Anchor Point Y"
                 },
-                "anchorPointX": {
-                    "type": "number",
-                    "title": "Anchor Point X"
+                anchorPointX: {
+                    type: "number",
+                    title: "Anchor Point X"
                 },
-                "area": {
-                    "type": "number",
-                    "title": "Area"
+                area: {
+                    type: "number",
+                    title: "Area"
                 },
-                "jurisdiction": {
-                    "type": "string",
-                    "title": "Jurisdiction"
+                jurisdiction: {
+                    type: "string",
+                    title: "Jurisdiction"
                 },
-                "agency": {
-                    "type": "string",
-                    "title": "Agency"
+                agency: {
+                    type: "string",
+                    title: "Agency"
                 },
-                "observer1FirstName": {
-                    "type": "string",
-                    "title": "First Name"
+                observer1FirstName: {
+                    type: "string",
+                    title: "First Name"
                 },
-                "observer1LastName": {
-                    "type": "string",
-                    "title": "Last Name"
+                observer1LastName: {
+                    type: "string",
+                    title: "Last Name"
                 },
-                "locationComment": {
-                    "type": "string",
-                    "title": "Location Comment"
+                locationComment: {
+                    type: "string",
+                    title: "Location Comment"
                 },
-                "generalComment": {
-                    "type": "string",
-                    "title": "General Comment"
+                generalComment: {
+                    type: "string",
+                    title: "General Comment"
                 },
-                "photoTaken": {
-                    "type": "boolean",
-                    "title": "Photo Taken"
+                photoTaken: {
+                    type: "boolean",
+                    title: "Photo Taken"
                 }
             }
         }
@@ -96,52 +96,52 @@ const schema = {
 };
 
 const uiSchema = {
-    "activityType": {
+    activityType: {
         "ui:autofocus": true
     },
-    "activityTypeData": {
+    activityTypeData: {
         "ui:autofocus": true,
         "ui:widget": "textarea"
     },
-    "activitySubType": {
+    activitySubType: {
         "ui:autofocus": true
     },
-    "activitySubTypeData": {
+    activitySubTypeData: {
         "ui:autofocus": true
     },
-    "date": {
+    date: {
         "ui:autofocus": true,
         "ui:widget": "hidden"
     },
-    "locationAndGeometry": {
-        "anchorPointY": {
+    locationAndGeometry: {
+        anchorPointY: {
             "ui:autofocus": true
         },
-        "anchorPointX": {
+        anchorPointX: {
             "ui:autofocus": true
         },
-        "area": {
+        area: {
             "ui:autofocus": true
         },
-        "jurisdiction": {
+        jurisdiction: {
             "ui:autofocus": true
         },
-        "agency": {
+        agency: {
             "ui:autofocus": true
         },
-        "observer1FirstName": {
+        observer1FirstName: {
             "ui:autofocus": true
         },
-        "observer1LastName": {
+        observer1LastName: {
             "ui:autofocus": true
         },
-        "locationComment": {
+        locationComment: {
             "ui:autofocus": true
         },
-        "generalComment": {
+        generalComment: {
             "ui:autofocus": true
         },
-        "photoTaken": {
+        photoTaken: {
             "ui:autofocus": true,
             "ui:widget": "radio"
         }
@@ -171,13 +171,16 @@ class ExploreContainer extends Component {
         const collection = await db.collection({ name: "activities", schema: { ...schema, version: 0 } })
 
         this.rxjsCollection = collection;
+        // console.log('Collection created!');
+        // alert('Collection created!');
     };
 
 
     submitEventHandler = async (event: any) => {
-        const result = await this.rxjsCollection.insert(event.formData);
-        // const results = await this.rxjsCollection.find().exec();
-        // results.map(item => console.log(item.get['activityType']));
+        await this.rxjsCollection.insert(event.formData);
+
+        const results = await this.rxjsCollection.find().exec();
+        results.map(item => console.log(item.get['activityType']));
     };
 
     render = () => {
