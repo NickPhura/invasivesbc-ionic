@@ -7,9 +7,9 @@ import './ExploreContainer.css';
 import * as RxDB from 'rxdb';
 
 if (window['cordova']) {
-    RxDB.addRxPlugin(require('pouchdb-adapter-cordova-sqlite'));
+    RxDB.addRxPlugin(require('pouchdb-adapter-cordova-sqlite'));  // mobile adapter
 } else {
-    RxDB.addRxPlugin(require('pouchdb-adapter-indexeddb'));
+    RxDB.addRxPlugin(require('pouchdb-adapter-indexeddb')); // browser adapter
 }
 
 // react json schema form related:
@@ -163,16 +163,24 @@ class ExploreContainer extends Component {
     }
 
     createDB = async () => {
-        const db = await RxDB.createRxDatabase({
-            name: 'mydatabase',
-            adapter: 'indexeddb', // the name of your adapter
-            ignoreDuplicate: true
-        });
+        let db: RxDB.RxDatabase;
+
+        if (window['cordova']) {
+            db = await RxDB.createRxDatabase({
+                name: 'mydatabase',
+                adapter: 'cordova-sqlite', // mobile adapter
+                ignoreDuplicate: true
+            });
+        } else {
+            db = await RxDB.createRxDatabase({
+                name: 'mydatabase',
+                adapter: 'indexeddb', // browser adapter
+                ignoreDuplicate: true
+            });
+        }
         const collection = await db.collection({ name: "activities", schema: { ...schema, version: 0 } })
 
         this.rxjsCollection = collection;
-        // console.log('Collection created!');
-        // alert('Collection created!');
     };
 
 
