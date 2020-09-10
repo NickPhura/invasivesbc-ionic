@@ -10,7 +10,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    
+   
     strategy:
       matrix:
         node-version: [12.x]
@@ -32,10 +32,12 @@ jobs:
       run: |
         npm install -g @ionic/cli
     - name: Build App
+      env:
+        CI: ""
       run: |
-        CI:"" ionic build
-        CI:"" npx cap update android
-        CI:"" npx cap copy android
+        ionic build
+        npx cap update android
+        npx cap copy android
     - name: Build with Gradle
       working-directory: ./android
       run: gradle assembleDebug --stacktrace
