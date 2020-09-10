@@ -8,12 +8,9 @@ import { IonFab, IonFabButton, IonIcon, IonGrid, IonRow,
          IonCol, IonImg, IonActionSheet } from '@ionic/react';
 import { usePhotoGallery } from '../../hooks/usePhotoGallery';
 
-// const Page: React.FC = () => {
-//   const { name } = useParams<{ name: string; }>();
-// };
 
 const PhotoPage: React.FC = () => {
-  const { takePhoto } = usePhotoGallery();
+  const { photos, takePhoto } = usePhotoGallery();
 
 
   return (
@@ -28,10 +25,19 @@ const PhotoPage: React.FC = () => {
       </IonHeader>
 
       <IonContent>
+      <IonGrid>
+          <IonRow>
+            {photos.map((photo, index) => (
+              <IonCol size="6" key={index}>
+                <IonImg src={photo.webviewPath} />
+              </IonCol>
+            ))}
+          </IonRow>
+        </IonGrid>
         <IonFab vertical="bottom" horizontal="center" slot="fixed">
           <IonFabButton onClick={() => takePhoto()}>
             <IonIcon icon={camera}></IonIcon>
-        </IonFabButton>
+          </IonFabButton>
         </IonFab>
       </IonContent>
     </IonPage>
