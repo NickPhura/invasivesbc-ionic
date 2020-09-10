@@ -1,7 +1,15 @@
 import React, { Component } from "react";
-import Form from "@rjsf/core";
+import Form from "@rjsf/material-ui";
 import { JSONSchema7 } from "json-schema";
 import "./FormContainer.css";
+
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField'
+import Grid from '@material-ui/core/Grid';
+import Add from '@material-ui/icons'
+import { useState, useEffect} from 'react'
+import { IonInput } from "@ionic/react";
+
 
 // db caching related:
 import * as RxDB from "rxdb";
@@ -148,6 +156,77 @@ const uiSchema = {
   },
 };
 
+
+
+// Form controls:
+function FormControls() {
+
+  // needed for fetch:
+  const [activityID, setActivityID] = useState('')
+
+  // just for fun (first half):
+  const [isValidActivityID, setIsValidActivityID] = useState(true)
+  const validateActivityID = useEffect(() => {
+      var activityIDAsNumber = +activityID
+      activityIDAsNumber >= 0? setIsValidActivityID(true) : setIsValidActivityID(false)}
+      ,[activityID])
+
+
+
+
+
+  const logWhenChanged = useEffect(() => { console.log('value changed')}, [activityID])
+
+
+  
+  const sync = () => {
+    console.log('code to sync goes here')
+  }
+
+  const read = () => {
+    console.log('code to read a record goes here')
+  }
+
+  const save = () => {
+    console.log('code to save a record goes here')
+  }
+
+    return (   
+        <>    
+          
+          <TextField  id="outlined-basic" 
+                      label="Activity ID To Fetch" 
+                      variant="outlined"
+          
+                      // other half of fun:
+                      error={!isValidActivityID}
+                      onChange={e=> setActivityID(e.target.value)}
+                      helperText="It's gotta be a number."
+                       />
+
+          
+                       <br></br>
+          <Grid container spacing={3}>
+              <Grid container item spacing={3}>
+                <Grid item spacing={1}>
+                  <Button size="small" variant="contained" color="primary" onClick={sync}>Sync Record</Button>
+                </Grid>
+              <Grid item spacing={1}>
+                <Button size="small" variant="contained" color="primary" onClick={read}>Get Record</Button>  
+              </Grid>
+                <Grid item spacing={1}>
+                  <Button size="small" variant="contained" color="primary" onClick={save}>Local Save</Button>
+                </Grid>
+              </Grid>
+          </Grid>
+      
+
+        </>
+    );
+}
+
+
+//TODO: move db to external provider and make form a functional component
 class FormContainer extends Component {
   name: string = "";
   rxjsCollection: RxDB.RxCollection;
@@ -184,6 +263,7 @@ class FormContainer extends Component {
     const collection = await db.collection({
       name: "activities",
       schema: { ...schema, version: 0 },
+
     });
 
     this.rxjsCollection = collection;
@@ -196,10 +276,20 @@ class FormContainer extends Component {
     results.map((item) => console.log(item.toJSON()));
   };
 
+
+
+
+
+
+
+
+
   render = () => {
     return (
       <div>
         <p>FORM!</p>
+        <FormControls/>
+
         <Form
           schema={schema as JSONSchema7}
           uiSchema={uiSchema}
