@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import * as L from "leaflet";
+import 'leaflet-draw';
 import "./MapContainer.css";
 import 'leaflet/dist/leaflet.css';
 
@@ -28,12 +29,14 @@ class MapContainer extends Component {
 
     map.addLayer(drawnItems);
 
-    const drawnControl = new L.Control.Draw({
+    const drawControl = new L.Control.Draw({
       position: 'topright',
       edit: {
         featureGroup: drawnItems
       }
     })
+
+    map.addControl(drawControl);
 
     setTimeout(function () {
       console.log("invalidate");
