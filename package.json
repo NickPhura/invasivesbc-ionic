@@ -14,6 +14,7 @@
         "cordova-plugin-sqlite-2": "~1.0.6",
         "cordova-sqlite-storage": "~5.0.1",
         "ionicons": "^5.0.0",
+        "leaflet": "^1.7.1",
         "pouchdb-adapter-cordova-sqlite": "~2.0.7",
         "pouchdb-adapter-indexeddb": "~7.2.2",
         "pouchdb-core": "7.2.2",
