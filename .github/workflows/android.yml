@@ -10,7 +10,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    
+   
     strategy:
       matrix:
         node-version: [12.x]
@@ -32,6 +32,8 @@ jobs:
       run: |
         npm install -g @ionic/cli
     - name: Build App
+      env:
+        CI: ""
       run: |
         ionic build
         npx cap update android
