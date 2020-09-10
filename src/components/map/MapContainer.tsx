@@ -4,7 +4,6 @@ import 'leaflet-draw';
 import "./MapContainer.css";
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-draw/dist/leaflet.draw.css';
-import Modal from '@material-ui/core/Modal';
 
 class MapContainer extends Component {
   constructor(props: any) {
@@ -56,13 +55,14 @@ class MapContainer extends Component {
       map.addLayer(feature.layer);
     })
 
+
   }
+
 
 
   render = () => {
     return (
-      <div id="map">
-      </div>
+      <div id="map"> </div>
     );
   };
 }
