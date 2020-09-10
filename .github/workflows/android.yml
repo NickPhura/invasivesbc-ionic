@@ -33,7 +33,7 @@ jobs:
         npm install -g @ionic/cli
     - name: Build App
       run: |
-        ionic build android
+        ionic build
         npx cap update android
         npx cap copy android
     - name: Build with Gradle
