@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import Form from "@rjsf/core";
+import Form from "@rjsf/material-ui";
 import { JSONSchema7 } from "json-schema";
 import "./FormContainer.css";
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid';
-
-
+import Add from '@material-ui/icons'
 import { useState, useEffect} from 'react'
+import { IonInput } from "@ionic/react";
 
 
 // db caching related:
@@ -171,6 +171,14 @@ function FormControls() {
       activityIDAsNumber >= 0? setIsValidActivityID(true) : setIsValidActivityID(false)}
       ,[activityID])
 
+
+
+
+
+  const logWhenChanged = useEffect(() => { console.log('value changed')}, [activityID])
+
+
+  
   const sync = () => {
     console.log('code to sync goes here')
   }
@@ -255,6 +263,7 @@ class FormContainer extends Component {
     const collection = await db.collection({
       name: "activities",
       schema: { ...schema, version: 0 },
+
     });
 
     this.rxjsCollection = collection;
@@ -268,7 +277,8 @@ class FormContainer extends Component {
   };
 
 
-  
+
+
 
 
 
