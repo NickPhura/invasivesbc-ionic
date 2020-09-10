@@ -32,31 +32,37 @@ class MapContainer extends Component {
 
     const drawControl = new L.Control.Draw({
       position: 'topright',
+      draw: {
+        marker: false,
+        circle: false
+      },
       edit: {
-        featureGroup: drawnItems
+        featureGroup: drawnItems,
+        remove: false,
+        edit: false
       }
     })
 
     map.addControl(drawControl);
 
     setTimeout(function () {
-      console.log("invalidate");
       map.invalidateSize();
       map.setView([55,-128],10);
     },1000);
 
     map.on('draw:created',(feature) => {
-      console.log(feature);
+      console.log(feature.layer.toGeoJSON());
       map.addLayer(feature.layer);
     })
+
 
   }
 
 
+
   render = () => {
     return (
-      <div id="map">
-      </div>
+      <div id="map"> </div>
     );
   };
 }
