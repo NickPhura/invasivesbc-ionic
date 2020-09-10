@@ -16,7 +16,7 @@ class PhotoContainer extends Component {
   render = () => {
     return (
       <div>
-        <p>PHOTO!</p>
+        <p>Placeholder if needed</p>
       </div>
     );
   };

@@ -30,7 +30,7 @@ const appPages: AppPage[] = [
     mdIcon: mailSharp
   },
   {
-    title: 'Photos',
+    title: 'Photo Gallery',
     url: '/page/photo',
     iosIcon: paperPlaneOutline,
     mdIcon: paperPlaneSharp

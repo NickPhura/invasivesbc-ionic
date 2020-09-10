@@ -3,10 +3,18 @@ import React from 'react';
 import { useParams } from 'react-router';
 import PhotoContainer from '../../components/photo/PhotoContainer';
 import './PhotoPage.css';
+import { camera, trash, close } from 'ionicons/icons';
+import { IonFab, IonFabButton, IonIcon, IonGrid, IonRow,
+         IonCol, IonImg, IonActionSheet } from '@ionic/react';
+import { usePhotoGallery } from '../../hooks/usePhotoGallery';
 
-const Page: React.FC = () => {
+// const Page: React.FC = () => {
+//   const { name } = useParams<{ name: string; }>();
+// };
 
-  const { name } = useParams<{ name: string; }>();
+const PhotoPage: React.FC = () => {
+  const { takePhoto } = usePhotoGallery();
+
 
   return (
     <IonPage>
@@ -15,20 +23,20 @@ const Page: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>{name}</IonTitle>
+          <IonTitle>Photo Gallery</IonTitle>
         </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">{name}</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <PhotoContainer />
+      <IonContent>
+        <IonFab vertical="bottom" horizontal="center" slot="fixed">
+          <IonFabButton onClick={() => takePhoto()}>
+            <IonIcon icon={camera}></IonIcon>
+        </IonFabButton>
+        </IonFab>
       </IonContent>
     </IonPage>
   );
 };
 
-export default Page;
+
+export default PhotoPage;
