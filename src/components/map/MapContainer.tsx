@@ -45,6 +45,11 @@ class MapContainer extends Component {
       map.setView([55,-128],10);
     },1000);
 
+    map.on('draw:created',(feature) => {
+      console.log(feature);
+      map.addLayer(feature.layer);
+    })
+
   }
 
 
