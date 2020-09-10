@@ -3,6 +3,7 @@ import * as L from "leaflet";
 import 'leaflet-draw';
 import "./MapContainer.css";
 import 'leaflet/dist/leaflet.css';
+import 'leaflet-draw/dist/leaflet.draw.css';
 
 class MapContainer extends Component {
   constructor(props: any) {
