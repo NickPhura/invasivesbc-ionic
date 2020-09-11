@@ -1,25 +1,36 @@
-import React, { Component } from 'react';
-import './AdminContainer.css';
+import React, { useEffect, useState } from "react";
+import { useInvasivesApi } from "../../api/api";
+import "./AdminContainer.css";
 
-class AdminContainer extends Component {
-  constructor(props: any) {
-    super(props);
+const AdminContainer: React.FC = () => {
+  const api = useInvasivesApi();
 
-    console.log('Admin Constructor!');
-  }
+  const [activityId, setActivityId] = useState(null);
+  const [activity, setActivity] = useState(null);
 
-  async componentDidMount() {
-    console.log('Admin componentDidMount!');
-    // On init setup
-  }
-
-  render = () => {
-    return (
-      <div>
-        <p>Admin!</p>
-      </div>
-    );
+  const getActivity = async () => {
+    const activity = await api.getActivityById(activityId);
+    setActivity(activity.data);
   };
-}
+
+  return (
+    <div>
+      <input
+        onChange={(event) => {
+          setActivityId(event.target.value);
+        }}
+      ></input>
+      <button
+        onClick={() => {
+          getActivity();
+        }}
+      >
+        Fetch Activity
+      </button>
+      <p>{activityId}</p>
+      <p>{activity}</p>
+    </div>
+  );
+};
 
 export default AdminContainer;

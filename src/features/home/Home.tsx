@@ -11,10 +11,10 @@ import { Route } from "react-router-dom";
 const Home: React.FC = () => {
   return (
       <Grid container direction="row">
-        <Grid lg={3} md={3} sm={2}>
+        <Grid item lg={3} md={3} sm={2}>
           <SideMenu />
         </Grid>
-        <Grid lg={9} md={9} sm={10}>
+        <Grid item lg={9} md={9} sm={10}>
           <Route
             path="/home/form"
             render={(props: any) => <FormPage {...props} name="Form" />}
