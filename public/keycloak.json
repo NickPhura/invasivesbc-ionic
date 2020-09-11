@@ -1,0 +1,9 @@
+{
+    "realm": "dfmlcg7z",
+    "url": "https://sso-dev.pathfinder.gov.bc.ca/auth/",
+    "clientId": "invasives-bc",
+    "ssl-required": "external",
+    "resource": "react",
+    "public-client": true,
+    "confidential-port": 0
+}

@@ -1,19 +1,24 @@
 import {
-  IonContent,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonListHeader,
-  IonMenu,
-  IonMenuToggle,
-  IonNote,
-} from '@ionic/react';
+  MenuList,
+  MenuItem,
+  ListItemText,
+  ListItemIcon,
+} from "@material-ui/core";
+import { PriorityHigh } from "@material-ui/icons";
 
-import React from 'react';
-import { useLocation } from 'react-router-dom';
-import {  heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp } from 'ionicons/icons';
-import './Menu.css';
+import React from "react";
+import { useHistory } from "react-router-dom";
+import {
+  imagesOutline,
+  imagesSharp,
+  fileTrayOutline,
+  fileTraySharp,
+  mapOutline,
+  mapSharp,
+  lockClosedOutline,
+  lockClosedSharp,
+} from "ionicons/icons";
+import "./Menu.css";
 
 interface AppPage {
   url: string;
@@ -24,47 +29,51 @@ interface AppPage {
 
 const appPages: AppPage[] = [
   {
-    title: 'Form',
-    url: '/page/Form',
-    iosIcon: mailOutline,
-    mdIcon: mailSharp
+    title: "Form",
+    url: "/home/Form",
+    iosIcon: fileTrayOutline,
+    mdIcon: fileTraySharp,
   },
   {
     title: 'Photo Gallery',
-    url: '/page/photo',
-    iosIcon: paperPlaneOutline,
-    mdIcon: paperPlaneSharp
+    url: "/home/photo",
+    iosIcon: imagesOutline,
+    mdIcon: imagesSharp,
   },
   {
-    title: 'Map',
-    url: '/page/map',
-    iosIcon: heartOutline,
-    mdIcon: heartSharp
-  }
+    title: "Map",
+    url: "/home/map",
+    iosIcon: mapOutline,
+    mdIcon: mapSharp,
+  },
+  {
+    title: "Admin",
+    url: "/home/admin",
+    iosIcon: lockClosedOutline,
+    mdIcon: lockClosedSharp,
+  },
 ];
 
-const Menu: React.FC = () => {
-  const location = useLocation();
+const SideMenu: React.FC = () => {
+  const history = useHistory();
 
   return (
-    <IonMenu contentId="main" type="overlay">
-      <IonContent>
-        <IonList id="inbox-list">
-          <IonListHeader>Invasives BC</IonListHeader>
-          {appPages.map((appPage, index) => {
-            return (
-              <IonMenuToggle key={index} autoHide={false}>
-                <IonItem className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
-                  <IonIcon slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
-                  <IonLabel>{appPage.title}</IonLabel>
-                </IonItem>
-              </IonMenuToggle>
-            );
-          })}
-        </IonList>
-      </IonContent>
-    </IonMenu>
+    <MenuList>
+      {appPages.map((appPage, index) => {
+        return (
+          <MenuItem
+            onClick={() => history.push(appPage.url)}
+            key={appPage.title}
+          >
+            <ListItemIcon>
+              <PriorityHigh />
+            </ListItemIcon>
+            <ListItemText>{appPage.title}</ListItemText>
+          </MenuItem>
+        );
+      })}
+    </MenuList>
   );
 };
 
-export default Menu;
+export default SideMenu;

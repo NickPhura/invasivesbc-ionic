@@ -1,12 +1,8 @@
-import Menu from "./components/Menu";
-import FormPage from "./pages/form/FormPage";
-import MapPage from "./pages/map/MapPage";
-import PhotoPage from "./pages/photo/PhotoPage";
 import React from "react";
-import { IonApp, IonRouterOutlet, IonSplitPane } from "@ionic/react";
-import { IonReactRouter } from "@ionic/react-router";
-import { Redirect, Route } from "react-router-dom";
 import { DatabaseProvider }  from "./components/DatabaseProvider"
+import { AuthStateContext, IAuthState } from "./contexts/authStateContext";
+import { CircularProgress } from "@material-ui/core";
+import AppRouter from "./AppRouter";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -32,20 +28,19 @@ import { images, square, triangle } from 'ionicons/icons';
 
 const App: React.FC = () => {
   return (
-    <IonApp>
-      <DatabaseProvider>
-      <IonReactRouter>
-        <IonSplitPane contentId="main">
-          <Menu />
-          <IonRouterOutlet id="main">
-            <Route path="/page/form" component={FormPage} exact />
-            <Route path="/page/map" component={MapPage} exact />
-            <Route path="/page/photo" component={PhotoPage} exact />
-          </IonRouterOutlet>
-        </IonSplitPane>
-      </IonReactRouter>
-      </DatabaseProvider>
-    </IonApp>
+    <AuthStateContext.Consumer>
+      {(context: IAuthState) => {
+        if (!context.ready) {
+          console.log("Auth context not ready");
+          return <CircularProgress />;
+        }
+
+        return (
+        <DatabaseProvider>
+        <AppRouter />;
+        </DatabaseProvider>
+        )}}
+    </AuthStateContext.Consumer>
   );
 };
 

@@ -1,9 +1,9 @@
 import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import React from 'react';
-import MapContainer from '../../components/map/MapContainer';
-import './MapPage.css';
+import AdminContainer from '../../components/admin/AdminContainer';
+import './AdminPage.css';
 
-const MapPage: React.FC = (props: any) => {
+const AdminPage: React.FC = (props: any) => {
   return (
     <>
       <IonHeader>
@@ -21,10 +21,10 @@ const MapPage: React.FC = (props: any) => {
             <IonTitle size="large">{props.name}</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <MapContainer />
+        <AdminContainer />
       </IonContent>
     </>
   );
 };
 
-export default MapPage;
+export default AdminPage;

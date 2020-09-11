@@ -26,20 +26,20 @@ class MapContainer extends Component {
       maxZoom: 18
     }).addTo(map);
 
-    const drawnItems = new L.FeatureGroup();
+    var drawnItems = new L.FeatureGroup();
 
     map.addLayer(drawnItems);
 
-    const drawControl = new L.Control.Draw({
+    var drawControl = new L.Control.Draw({
       position: 'topright',
       draw: {
         marker: false,
         circle: true
       },
       edit: {
-        featureGroup: drawnItems,
-        remove: true,
-        edit: true
+        featureGroup: drawnItems
+        // remove: true,
+        // edit: true
       }
     })
 
@@ -52,8 +52,54 @@ class MapContainer extends Component {
 
     map.on('draw:created',(feature) => {
       console.log(feature.layer.toGeoJSON());
-      map.addLayer(feature.layer);
-    })
+      drawnItems.addLayer(feature.layer);
+    });
+
+    map.on('draw:drawvertex', function (layerGroup) {
+      console.log(layerGroup);
+    });
+
+    map.on('draw:drawstart', function (layerGroup) {
+      console.log("started");
+      console.log(layerGroup);
+    });
+
+    map.on('draw:drawstop', function (layerGroup) {
+      console.log("stopped");
+      console.log(layerGroup);
+    });
+
+    map.on('draw:deleted', function () {
+      console.log('deleted')
+    });
+
+    map.on('draw:editstart', function () {
+      console.log('editstart')
+    });
+
+    map.on('draw:editmove', function () {
+      console.log('editmove')
+    });
+
+    map.on('draw:editresize', function () {
+      console.log('editresize')
+    });
+
+    map.on('draw:editvertex', function () {
+      console.log('editvertex')
+    });
+
+    map.on('draw:editstop', function () {
+      console.log('editstop')
+    });
+
+    map.on('draw:deletestart', function () {
+      console.log('deletestart')
+    });
+
+    map.on('draw:deletestop', function () {
+      console.log('deletestop')
+    });
 
 
   }

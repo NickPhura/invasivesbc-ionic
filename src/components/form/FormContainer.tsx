@@ -222,19 +222,25 @@ function FormControls() {
 //TODO: move db to external provider and make form a functional component
 const FormContainer: React.FC = () => {
   let rxjsCollection: RxDB.RxCollection;
-  const database = useContext(DatabaseContext)
-  useEffect(() => setupTable, [])
+  const databaseObj = useContext(DatabaseContext)
+  const [isDatabaseReady] = useState(databaseObj.isReady)
+  let database = databaseObj.database
+
+  useEffect(() => { setupTable() }, [isDatabaseReady])
 
   async function setupTable() {
+    console.log('set up table')
+
+    if (!database) {return}
 
     console.log(database)
-    const collection = await database.collection({
+   const collection = await database.collection({
       name: "activities",
       schema: { ...schema, version: 0 },
-
     });
 
     rxjsCollection = collection;
+    return null
   };
 
   const submitEventHandler = async (event: any) => {

@@ -3,13 +3,13 @@ import { RxDatabaseBase } from "rxdb/dist/types/rx-database";
 import * as RxDB from "rxdb";
 import { useState, useEffect } from 'react'
 
-export const DatabaseContext = React.createContext(
-    null)
+export const DatabaseContext = React.createContext({database: null, isReady: false})
 
 export function DatabaseProvider(props) {
 
-    async function setupDatabase() {
-        const database = await window["cordova"] ? RxDB.createRxDatabase({
+     async function setupDatabase() {
+        console.log('setupdatabase')
+       const database = await window["cordova"] ? RxDB.createRxDatabase({
             name: "mydatabase",
             adapter: "cordova-sqlite", // mobile adapter
             pouchSettings: {
@@ -23,7 +23,8 @@ export function DatabaseProvider(props) {
                 adapter: "indexeddb", // browser adapter
                 ignoreDuplicate: true,
             })
-        setDatabase(database)
+        setDatabase({database: database, isReady: true})
+        console.log('its set up')
     }
 
     if (window["cordova"]) {
@@ -37,7 +38,7 @@ export function DatabaseProvider(props) {
     const [database, setDatabase] = useState(null)
 
     // one time setup
-    useEffect(() => setupDatabase, [])
+    useEffect(() => { setupDatabase() }, [])
 
     return (
         <DatabaseContext.Provider value={database}>
