@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid';
 import Add from '@material-ui/icons'
-import { useState, useEffect, useContext} from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { IonInput } from "@ionic/react";
 
 
@@ -163,15 +163,16 @@ function FormControls() {
 
   // just for fun (first half):
   const [isValidActivityID, setIsValidActivityID] = useState(true)
-  
-  
+
+
   const validateActivityID = useEffect(() => {
-      var activityIDAsNumber = +activityID
-      activityIDAsNumber >= 0? setIsValidActivityID(true) : setIsValidActivityID(false)}
-      ,[activityID])
+    var activityIDAsNumber = +activityID
+    activityIDAsNumber >= 0 ? setIsValidActivityID(true) : setIsValidActivityID(false)
+  }
+    , [activityID])
 
 
-  
+
   const sync = () => {
     console.log('code to sync goes here')
   }
@@ -184,38 +185,38 @@ function FormControls() {
     console.log('code to save a record goes here')
   }
 
-    return (   
-        <>    
-          
-          <TextField  id="outlined-basic" 
-                      label="Activity ID To Fetch" 
-                      variant="outlined"
-          
-                      // other half of fun:
-                      error={!isValidActivityID}
-                      onChange={e=> setActivityID(e.target.value)}
-                      helperText="It's gotta be a number."
-                       />
+  return (
+    <>
 
-          
-                       <br></br>
-          <Grid container spacing={3}>
-              <Grid container item spacing={3}>
-                <Grid item >
-                  <Button size="small" variant="contained" color="primary" onClick={sync}>Sync Record</Button>
-                </Grid>
-              <Grid item >
-                <Button size="small" variant="contained" color="primary" onClick={read}>Get Record</Button>  
-              </Grid>
-                <Grid item >
-                  <Button size="small" variant="contained" color="primary" onClick={save}>Local Save</Button>
-                </Grid>
-              </Grid>
+      <TextField id="outlined-basic"
+        label="Activity ID To Fetch"
+        variant="outlined"
+
+        // other half of fun:
+        error={!isValidActivityID}
+        onChange={e => setActivityID(e.target.value)}
+        helperText="It's gotta be a number."
+      />
+
+
+      <br></br>
+      <Grid container spacing={3}>
+        <Grid container item spacing={3}>
+          <Grid item >
+            <Button size="small" variant="contained" color="primary" onClick={sync}>Sync Record</Button>
           </Grid>
-      
+          <Grid item >
+            <Button size="small" variant="contained" color="primary" onClick={read}>Get Record</Button>
+          </Grid>
+          <Grid item >
+            <Button size="small" variant="contained" color="primary" onClick={save}>Local Save</Button>
+          </Grid>
+        </Grid>
+      </Grid>
 
-        </>
-    );
+
+    </>
+  );
 }
 
 
@@ -226,15 +227,15 @@ const FormContainer: React.FC = () => {
   const [isDatabaseReady] = useState(databaseObj.isReady)
   let database = databaseObj.database
 
-  useEffect(() => { setupTable() }, [isDatabaseReady])
+  useEffect(() => { setupTable() }, [databaseObj.isReady])
 
   async function setupTable() {
     console.log('set up table')
 
-    if (!database) {return}
+    if (!isDatabaseReady) { return }
 
     console.log(database)
-   const collection = await database.collection({
+    const collection = await database.collection({
       name: "activities",
       schema: { ...schema, version: 0 },
     });
@@ -245,24 +246,24 @@ const FormContainer: React.FC = () => {
 
   const submitEventHandler = async (event: any) => {
     await rxjsCollection.insert(event.formData);
-    
+
     const results = await rxjsCollection.find().exec();
     results.map((item) => console.log(item.toJSON()));
   };
 
-    return (
-      <div>
-        <p>FORM!</p>
-        <FormControls/>
+  return (
+    <div>
+      <p>FORM!</p>
+      <FormControls />
 
-        <Form
-          schema={schema as JSONSchema7}
-          uiSchema={uiSchema}
-          onSubmit={submitEventHandler}
-        />
-      </div>
-    );
-  };
+      <Form
+        schema={schema as JSONSchema7}
+        uiSchema={uiSchema}
+        onSubmit={submitEventHandler}
+      />
+    </div>
+  );
+};
 
 
 export default FormContainer;

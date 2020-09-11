@@ -35,7 +35,7 @@ export function DatabaseProvider(props) {
 
 
     // make state
-    const [database, setDatabase] = useState(null)
+    const [database, setDatabase] = useState({database: null, isReady: false})
 
     // one time setup
     useEffect(() => { setupDatabase() }, [])
