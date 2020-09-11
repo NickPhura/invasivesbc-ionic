@@ -7,18 +7,15 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid';
 import Add from '@material-ui/icons'
-import { useState, useEffect} from 'react'
+import { useState, useEffect, useContext} from 'react'
 import { IonInput } from "@ionic/react";
 
 
 // db caching related:
 import * as RxDB from "rxdb";
+import { DatabaseContext } from "../DatabaseProvider";
 
-if (window["cordova"]) {
-  RxDB.addRxPlugin(require("pouchdb-adapter-cordova-sqlite")); // mobile adapter
-} else {
-  RxDB.addRxPlugin(require("pouchdb-adapter-indexeddb")); // browser adapter
-}
+console.log('compile')
 
 // react json schema form related:
 const schema = {
@@ -166,16 +163,12 @@ function FormControls() {
 
   // just for fun (first half):
   const [isValidActivityID, setIsValidActivityID] = useState(true)
+  
+  
   const validateActivityID = useEffect(() => {
       var activityIDAsNumber = +activityID
       activityIDAsNumber >= 0? setIsValidActivityID(true) : setIsValidActivityID(false)}
       ,[activityID])
-
-
-
-
-
-  const logWhenChanged = useEffect(() => { console.log('value changed')}, [activityID])
 
 
   
@@ -208,13 +201,13 @@ function FormControls() {
                        <br></br>
           <Grid container spacing={3}>
               <Grid container item spacing={3}>
-                <Grid item spacing={1}>
+                <Grid item >
                   <Button size="small" variant="contained" color="primary" onClick={sync}>Sync Record</Button>
                 </Grid>
-              <Grid item spacing={1}>
+              <Grid item >
                 <Button size="small" variant="contained" color="primary" onClick={read}>Get Record</Button>  
               </Grid>
-                <Grid item spacing={1}>
+                <Grid item >
                   <Button size="small" variant="contained" color="primary" onClick={save}>Local Save</Button>
                 </Grid>
               </Grid>
@@ -227,64 +220,30 @@ function FormControls() {
 
 
 //TODO: move db to external provider and make form a functional component
-class FormContainer extends Component {
-  name: string = "";
-  rxjsCollection: RxDB.RxCollection;
+const FormContainer: React.FC = () => {
+  let rxjsCollection: RxDB.RxCollection;
+  const database = useContext(DatabaseContext)
+  useEffect(() => setupTable, [])
 
-  constructor(props: any) {
-    super(props);
+  async function setupTable() {
 
-    this.name = props.name;
-  }
-
-  async componentDidMount() {
-    await this.createDB();
-  }
-
-  createDB = async () => {
-    let db: RxDB.RxDatabase;
-
-    if (window["cordova"]) {
-      db = await RxDB.createRxDatabase({
-        name: "mydatabase",
-        adapter: "cordova-sqlite", // mobile adapter
-        pouchSettings: {
-          location: "default",
-        },
-        ignoreDuplicate: true,
-      });
-    } else {
-      db = await RxDB.createRxDatabase({
-        name: "mydatabase",
-        adapter: "indexeddb", // browser adapter
-        ignoreDuplicate: true,
-      });
-    }
-    const collection = await db.collection({
+    console.log(database)
+    const collection = await database.collection({
       name: "activities",
       schema: { ...schema, version: 0 },
 
     });
 
-    this.rxjsCollection = collection;
+    rxjsCollection = collection;
   };
 
-  submitEventHandler = async (event: any) => {
-    await this.rxjsCollection.insert(event.formData);
-
-    const results = await this.rxjsCollection.find().exec();
+  const submitEventHandler = async (event: any) => {
+    await rxjsCollection.insert(event.formData);
+    
+    const results = await rxjsCollection.find().exec();
     results.map((item) => console.log(item.toJSON()));
   };
 
-
-
-
-
-
-
-
-
-  render = () => {
     return (
       <div>
         <p>FORM!</p>
@@ -293,11 +252,11 @@ class FormContainer extends Component {
         <Form
           schema={schema as JSONSchema7}
           uiSchema={uiSchema}
-          onSubmit={this.submitEventHandler}
+          onSubmit={submitEventHandler}
         />
       </div>
     );
   };
-}
+
 
 export default FormContainer;

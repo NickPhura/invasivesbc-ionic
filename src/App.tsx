@@ -6,6 +6,7 @@ import React from "react";
 import { IonApp, IonRouterOutlet, IonSplitPane } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { Redirect, Route } from "react-router-dom";
+import { DatabaseProvider }  from "./components/DatabaseProvider"
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -32,6 +33,7 @@ import { images, square, triangle } from 'ionicons/icons';
 const App: React.FC = () => {
   return (
     <IonApp>
+      <DatabaseProvider>
       <IonReactRouter>
         <IonSplitPane contentId="main">
           <Menu />
@@ -42,6 +44,7 @@ const App: React.FC = () => {
           </IonRouterOutlet>
         </IonSplitPane>
       </IonReactRouter>
+      </DatabaseProvider>
     </IonApp>
   );
 };
