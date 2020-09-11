@@ -34,12 +34,12 @@ class MapContainer extends Component {
       position: 'topright',
       draw: {
         marker: false,
-        circle: false
+        circle: true
       },
       edit: {
         featureGroup: drawnItems,
-        remove: false,
-        edit: false
+        remove: true,
+        edit: true
       }
     })
 
