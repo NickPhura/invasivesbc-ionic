@@ -1,9 +1,4 @@
-import {
-  MenuList,
-  MenuItem,
-  ListItemText,
-  ListItemIcon,
-} from "@material-ui/core";
+import { List, ListItem, ListItemText, ListItemIcon } from "@material-ui/core";
 import { PriorityHigh } from "@material-ui/icons";
 
 import React from "react";
@@ -35,7 +30,7 @@ const appPages: AppPage[] = [
     mdIcon: fileTraySharp,
   },
   {
-    title: 'Photo Gallery',
+    title: "Photo Gallery",
     url: "/home/photo",
     iosIcon: imagesOutline,
     mdIcon: imagesSharp,
@@ -54,25 +49,26 @@ const appPages: AppPage[] = [
   },
 ];
 
-const SideMenu: React.FC = () => {
+const SideMenu: React.FC = (props) => {
   const history = useHistory();
 
   return (
-    <MenuList>
+    <List>
       {appPages.map((appPage, index) => {
         return (
-          <MenuItem
-            onClick={() => history.push(appPage.url)}
+          <ListItem
+            button
             key={appPage.title}
+            onClick={() => history.push(appPage.url)}
           >
             <ListItemIcon>
               <PriorityHigh />
             </ListItemIcon>
             <ListItemText>{appPage.title}</ListItemText>
-          </MenuItem>
+          </ListItem>
         );
       })}
-    </MenuList>
+    </List>
   );
 };
 
