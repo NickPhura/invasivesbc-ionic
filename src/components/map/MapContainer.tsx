@@ -73,18 +73,6 @@ class MapContainer extends Component {
       console.log('deleted')
     });
 
-    map.on('draw:drawstart', function () {
-      console.log('drawstart')
-    });
-
-    map.on('draw:drawstop', function () {
-      console.log('drawstop')
-    });
-
-    map.on('draw:drawvertex', function () {
-      console.log('drawvertex')
-    });
-
     map.on('draw:editstart', function () {
       console.log('editstart')
     });
