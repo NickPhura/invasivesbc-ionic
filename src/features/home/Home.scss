@@ -1,0 +1,12 @@
+@import "../../../styles.scss";
+
+.App-home {
+  ion-content {
+    --padding-start: 1rem;
+    --padding-end: 1rem;
+    --padding-top: 1rem;
+    --padding-bottom: 1rem;
+    
+    overflow: hidden;
+  }
+}

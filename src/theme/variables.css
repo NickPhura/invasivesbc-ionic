@@ -1,6 +1,14 @@
 /* Ionic Variables and Theming. For more info, please see:
 http://ionicframework.com/docs/theming/ */
 
+.menu-content-open {
+  /** 
+   * IonRouterOutlet adds a class `menu-content-open` when IonMenu is open in mobile mode.  
+   * This includes `pointer-events: none` which prevents clicking the menu items.
+   */
+  pointer-events: unset !important;
+}
+
 /** Ionic CSS Variables **/
 :root {
   /** primary **/
