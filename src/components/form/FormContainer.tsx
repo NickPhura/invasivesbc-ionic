@@ -223,8 +223,13 @@ function FormControls() {
 //TODO: move db to external provider and make form a functional component
 const FormContainer: React.FC = () => {
   let rxjsCollection: RxDB.RxCollection;
+  
+  
   const databaseObj = useContext(DatabaseContext)
-  const [isDatabaseReady] = useState(databaseObj.isReady)
+  const [isDatabaseReady, setDatabaseFlag] = useState(databaseObj.isReady)
+  const [tableWasMade, setTableWasMade] = useState(false)
+  
+  
   let database = databaseObj.database
 
   useEffect(() => { setupTable() }, [databaseObj.isReady])
@@ -232,7 +237,7 @@ const FormContainer: React.FC = () => {
   async function setupTable() {
     console.log('set up table')
 
-    if (!isDatabaseReady) { return }
+    if ((!isDatabaseReady || !database) && !tableWasMade) { return }
 
     console.log(database)
     const collection = await database.collection({
@@ -241,6 +246,7 @@ const FormContainer: React.FC = () => {
     });
 
     rxjsCollection = collection;
+    setTableWasMade(true)
     return null
   };
 
