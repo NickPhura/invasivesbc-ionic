@@ -3,22 +3,14 @@ import Form from "@rjsf/material-ui";
 import { JSONSchema7 } from "json-schema";
 import "./FormContainer.css";
 
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField'
-import Grid from '@material-ui/core/Grid';
-import Add from '@material-ui/icons'
-import { useState, useEffect} from 'react'
-import { IonInput } from "@ionic/react";
-
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
+import { useState, useEffect, useContext } from "react";
 
 // db caching related:
 import * as RxDB from "rxdb";
-
-if (window["cordova"]) {
-  RxDB.addRxPlugin(require("pouchdb-adapter-cordova-sqlite")); // mobile adapter
-} else {
-  RxDB.addRxPlugin(require("pouchdb-adapter-indexeddb")); // browser adapter
-}
+import { DatabaseContext } from "../../contexts/DatabaseContext";
 
 // react json schema form related:
 const schema = {
@@ -156,148 +148,131 @@ const uiSchema = {
   },
 };
 
-
-
 // Form controls:
 function FormControls() {
-
   // needed for fetch:
-  const [activityID, setActivityID] = useState('')
+  const [activityID, setActivityID] = useState("");
 
   // just for fun (first half):
-  const [isValidActivityID, setIsValidActivityID] = useState(true)
-  const validateActivityID = useEffect(() => {
-      var activityIDAsNumber = +activityID
-      activityIDAsNumber >= 0? setIsValidActivityID(true) : setIsValidActivityID(false)}
-      ,[activityID])
+  const [isValidActivityID, setIsValidActivityID] = useState(true);
 
+  useEffect(() => {
+    var activityIDAsNumber = +activityID;
+    activityIDAsNumber >= 0
+      ? setIsValidActivityID(true)
+      : setIsValidActivityID(false);
+  }, [activityID]);
 
-
-
-
-  const logWhenChanged = useEffect(() => { console.log('value changed')}, [activityID])
-
-
-  
   const sync = () => {
-    console.log('code to sync goes here')
-  }
-
-  const read = () => {
-    console.log('code to read a record goes here')
-  }
-
-  const save = () => {
-    console.log('code to save a record goes here')
-  }
-
-    return (   
-        <>    
-          
-          <TextField  id="outlined-basic" 
-                      label="Activity ID To Fetch" 
-                      variant="outlined"
-          
-                      // other half of fun:
-                      error={!isValidActivityID}
-                      onChange={e=> setActivityID(e.target.value)}
-                      helperText="It's gotta be a number."
-                       />
-
-          
-                       <br></br>
-          <Grid container spacing={3}>
-              <Grid container item spacing={3}>
-                <Grid item spacing={1}>
-                  <Button size="small" variant="contained" color="primary" onClick={sync}>Sync Record</Button>
-                </Grid>
-              <Grid item spacing={1}>
-                <Button size="small" variant="contained" color="primary" onClick={read}>Get Record</Button>  
-              </Grid>
-                <Grid item spacing={1}>
-                  <Button size="small" variant="contained" color="primary" onClick={save}>Local Save</Button>
-                </Grid>
-              </Grid>
-          </Grid>
-      
-
-        </>
-    );
-}
-
-
-//TODO: move db to external provider and make form a functional component
-class FormContainer extends Component {
-  name: string = "";
-  rxjsCollection: RxDB.RxCollection;
-
-  constructor(props: any) {
-    super(props);
-
-    this.name = props.name;
-  }
-
-  async componentDidMount() {
-    await this.createDB();
-  }
-
-  createDB = async () => {
-    let db: RxDB.RxDatabase;
-
-    if (window["cordova"]) {
-      db = await RxDB.createRxDatabase({
-        name: "mydatabase",
-        adapter: "cordova-sqlite", // mobile adapter
-        pouchSettings: {
-          location: "default",
-        },
-        ignoreDuplicate: true,
-      });
-    } else {
-      db = await RxDB.createRxDatabase({
-        name: "mydatabase",
-        adapter: "indexeddb", // browser adapter
-        ignoreDuplicate: true,
-      });
-    }
-    const collection = await db.collection({
-      name: "activities",
-      schema: { ...schema, version: 0 },
-
-    });
-
-    this.rxjsCollection = collection;
+    console.log("code to sync goes here");
   };
 
-  submitEventHandler = async (event: any) => {
-    await this.rxjsCollection.insert(event.formData);
+  const read = () => {
+    console.log("code to read a record goes here");
+  };
 
-    const results = await this.rxjsCollection.find().exec();
+  const save = () => {
+    console.log("code to save a record goes here");
+  };
+
+  return (
+    <>
+      <TextField
+        id="outlined-basic"
+        label="Activity ID To Fetch"
+        variant="outlined"
+        // other half of fun:
+        error={!isValidActivityID}
+        onChange={(e) => setActivityID(e.target.value)}
+        helperText="It's gotta be a number."
+      />
+
+      <br></br>
+      <Grid container spacing={3}>
+        <Grid container item spacing={3}>
+          <Grid item>
+            <Button
+              size="small"
+              variant="contained"
+              color="primary"
+              onClick={sync}
+            >
+              Sync Record
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              size="small"
+              variant="contained"
+              color="primary"
+              onClick={read}
+            >
+              Get Record
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              size="small"
+              variant="contained"
+              color="primary"
+              onClick={save}
+            >
+              Local Save
+            </Button>
+          </Grid>
+        </Grid>
+      </Grid>
+    </>
+  );
+}
+
+const FormContainer: React.FC = () => {
+  const database = useContext(DatabaseContext);
+
+  const [collection, setCollection] = useState(null);
+
+  const setupCollection = async () => {
+    if (!database) {
+      // database not yet set up
+      return;
+    }
+
+    if (database.activities) {
+      // collection already exists
+      return;
+    }
+
+    const collection = await database.collection({
+      name: "activities",
+      schema: { ...schema, version: 0 },
+    });
+
+    setCollection(collection);
+  };
+
+  const submitEventHandler = async (event: any) => {
+    await collection.insert(event.formData);
+
+    const results = await collection.find().exec();
     results.map((item) => console.log(item.toJSON()));
   };
 
+  useEffect(() => {
+    setupCollection();
+  }, [database]);
 
+  return (
+    <div>
+      <p>FORM!</p>
+      <FormControls />
 
-
-
-
-
-
-
-  render = () => {
-    return (
-      <div>
-        <p>FORM!</p>
-        <FormControls/>
-
-        <Form
-          schema={schema as JSONSchema7}
-          uiSchema={uiSchema}
-          onSubmit={this.submitEventHandler}
-        />
-      </div>
-    );
-  };
-}
+      <Form
+        schema={schema as JSONSchema7}
+        uiSchema={uiSchema}
+        onSubmit={submitEventHandler}
+      />
+    </div>
+  );
+};
 
 export default FormContainer;

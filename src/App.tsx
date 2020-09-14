@@ -1,4 +1,5 @@
 import React from "react";
+import { DatabaseContextProvider } from "./contexts/DatabaseContext";
 import { AuthStateContext, IAuthState } from "./contexts/authStateContext";
 import { CircularProgress } from "@material-ui/core";
 import AppRouter from "./AppRouter";
@@ -22,21 +23,20 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 
-/* Photo taking capabilities */
-import { images, square, triangle } from 'ionicons/icons';
-
 const App: React.FC = () => {
   return (
-    <AuthStateContext.Consumer>
-      {(context: IAuthState) => {
-        if (!context.ready) {
-          console.log("Auth context not ready");
-          return <CircularProgress />;
-        }
+    <DatabaseContextProvider>
+      <AuthStateContext.Consumer>
+        {(context: IAuthState) => {
+          if (!context.ready) {
+            console.log("Auth context not ready");
+            return <CircularProgress />;
+          }
 
-        return <AppRouter />;
-      }}
-    </AuthStateContext.Consumer>
+          return <AppRouter />;
+        }}
+      </AuthStateContext.Consumer>
+    </DatabaseContextProvider>
   );
 };
 
