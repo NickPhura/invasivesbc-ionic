@@ -3,19 +3,14 @@ import Form from "@rjsf/material-ui";
 import { JSONSchema7 } from "json-schema";
 import "./FormContainer.css";
 
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField'
-import Grid from '@material-ui/core/Grid';
-import Add from '@material-ui/icons'
-import { useState, useEffect, useContext } from 'react'
-import { IonInput } from "@ionic/react";
-
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
+import { useState, useEffect, useContext } from "react";
 
 // db caching related:
 import * as RxDB from "rxdb";
-import { DatabaseContext } from "../DatabaseProvider";
-
-console.log('compile')
+import { DatabaseContext } from "../../contexts/DatabaseContext";
 
 // react json schema form related:
 const schema = {
@@ -153,109 +148,118 @@ const uiSchema = {
   },
 };
 
-
-
 // Form controls:
 function FormControls() {
-
   // needed for fetch:
-  const [activityID, setActivityID] = useState('')
+  const [activityID, setActivityID] = useState("");
 
   // just for fun (first half):
-  const [isValidActivityID, setIsValidActivityID] = useState(true)
+  const [isValidActivityID, setIsValidActivityID] = useState(true);
 
-
-  const validateActivityID = useEffect(() => {
-    var activityIDAsNumber = +activityID
-    activityIDAsNumber >= 0 ? setIsValidActivityID(true) : setIsValidActivityID(false)
-  }
-    , [activityID])
-
-
+  useEffect(() => {
+    var activityIDAsNumber = +activityID;
+    activityIDAsNumber >= 0
+      ? setIsValidActivityID(true)
+      : setIsValidActivityID(false);
+  }, [activityID]);
 
   const sync = () => {
-    console.log('code to sync goes here')
-  }
+    console.log("code to sync goes here");
+  };
 
   const read = () => {
-    console.log('code to read a record goes here')
-  }
+    console.log("code to read a record goes here");
+  };
 
   const save = () => {
-    console.log('code to save a record goes here')
-  }
+    console.log("code to save a record goes here");
+  };
 
   return (
     <>
-
-      <TextField id="outlined-basic"
+      <TextField
+        id="outlined-basic"
         label="Activity ID To Fetch"
         variant="outlined"
-
         // other half of fun:
         error={!isValidActivityID}
-        onChange={e => setActivityID(e.target.value)}
+        onChange={(e) => setActivityID(e.target.value)}
         helperText="It's gotta be a number."
       />
-
 
       <br></br>
       <Grid container spacing={3}>
         <Grid container item spacing={3}>
-          <Grid item >
-            <Button size="small" variant="contained" color="primary" onClick={sync}>Sync Record</Button>
+          <Grid item>
+            <Button
+              size="small"
+              variant="contained"
+              color="primary"
+              onClick={sync}
+            >
+              Sync Record
+            </Button>
           </Grid>
-          <Grid item >
-            <Button size="small" variant="contained" color="primary" onClick={read}>Get Record</Button>
+          <Grid item>
+            <Button
+              size="small"
+              variant="contained"
+              color="primary"
+              onClick={read}
+            >
+              Get Record
+            </Button>
           </Grid>
-          <Grid item >
-            <Button size="small" variant="contained" color="primary" onClick={save}>Local Save</Button>
+          <Grid item>
+            <Button
+              size="small"
+              variant="contained"
+              color="primary"
+              onClick={save}
+            >
+              Local Save
+            </Button>
           </Grid>
         </Grid>
       </Grid>
-
-
     </>
   );
 }
 
-
-//TODO: move db to external provider and make form a functional component
 const FormContainer: React.FC = () => {
-  let rxjsCollection: RxDB.RxCollection;
-  
-  
-  const databaseObj = useContext(DatabaseContext)
-  const [isDatabaseReady, setDatabaseFlag] = useState(databaseObj.isReady)
-  const [tableWasMade, setTableWasMade] = useState(false)
-  
-  
-  let database = databaseObj.database
+  const database = useContext(DatabaseContext);
 
-  useEffect(() => { setupTable() }, [databaseObj.isReady])
+  const [collection, setCollection] = useState(null);
 
-  async function setupTable() {
-    console.log('set up table')
+  const setupCollection = async () => {
+    if (!database) {
+      // database not yet set up
+      return;
+    }
 
-    if ((!isDatabaseReady || !database) && !tableWasMade) { return }
+    if (database.activities) {
+      // collection already exists
+      return;
+    }
 
-    console.log(database)
     const collection = await database.collection({
       name: "activities",
       schema: { ...schema, version: 0 },
     });
 
-    rxjsCollection = collection;
-    setTableWasMade(true)
-    return null
+    setCollection(collection);
   };
 
   const submitEventHandler = async (event: any) => {
-    await rxjsCollection.insert(event.formData);
+    await collection.insert(event.formData);
 
-    const results = await rxjsCollection.find().exec();
+    const results = await collection.find().exec();
     results.map((item) => console.log(item.toJSON()));
   };
+
+  useEffect(() => {
+    setupCollection();
+  }, [database]);
 
   return (
     <div>
@@ -270,6 +274,5 @@ const FormContainer: React.FC = () => {
     </div>
   );
 };
-
 
 export default FormContainer;
