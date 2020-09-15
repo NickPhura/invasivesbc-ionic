@@ -29,7 +29,6 @@ const App: React.FC = () => {
       <AuthStateContext.Consumer>
         {(context: IAuthState) => {
           if (!context.ready) {
-            console.log("Auth context not ready");
             return <CircularProgress />;
           }
 

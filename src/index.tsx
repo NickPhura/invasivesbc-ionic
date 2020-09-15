@@ -1,14 +1,17 @@
-import { default as React } from 'react';
-import ReactDOM from 'react-dom';
-import IonicApp from './Ionic-App';
-import * as serviceWorker from './serviceWorker';
-import { defineCustomElements } from '@ionic/pwa-elements/loader';
+import { default as React } from "react";
+import ReactDOM from "react-dom";
+import IonicApp from "./Ionic-App";
+import * as serviceWorker from "./serviceWorker";
+import { defineCustomElements } from "@ionic/pwa-elements/loader";
+
+import { Plugins } from "@capacitor/core";
+const { Device } = Plugins;
 
 // Call the element loader after the platform has been bootstrapped
 defineCustomElements(window);
 
-const startApp = () => {
-  ReactDOM.render(<IonicApp />, document.getElementById('root'));
+const startApp = (info) => {
+  ReactDOM.render(<IonicApp {...{ info: info, children: null }} />, document.getElementById("root"));
 
   // If you want your app to work offline and load faster, you can change
   // unregister() to register() below. Note this comes with some pitfalls.
@@ -16,11 +19,18 @@ const startApp = () => {
   serviceWorker.unregister();
 };
 
-if (window['cordova']) {
+if (window["cordova"]) {
   // start app on mobile
   // must wait for 'deviceready' before starting
-  document.addEventListener('deviceready', startApp, false);
+  document.addEventListener(
+    "deviceready",
+    async () => {
+      const info = await Device.getInfo(); // TODO move this into a context provider
+      startApp(info);
+    },
+    false
+  );
 } else {
   // start app on web
-  startApp();
+  startApp(null);
 }

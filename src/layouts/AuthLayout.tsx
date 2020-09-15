@@ -1,22 +1,18 @@
-import { CircularProgress } from '@material-ui/core';
-import React from 'react';
-import { AuthStateContext } from '../contexts/authStateContext';
-import './AuthLayout.scss';
-import PublicLayout from './PublicLayout';
+import { CircularProgress } from "@material-ui/core";
+import React from "react";
+import { AuthStateContext } from "../contexts/authStateContext";
+import "./AuthLayout.scss";
+import PublicLayout from "./PublicLayout";
 
 const AuthLayout: React.FC = (props) => {
   return (
     <AuthStateContext.Consumer>
-      {context => {
+      {(context) => {
         if (!context.ready) {
           return <CircularProgress></CircularProgress>;
         }
 
-        return (
-          <PublicLayout>
-            {props.children}
-          </PublicLayout>
-        );
+        return <PublicLayout>{props.children}</PublicLayout>;
       }}
     </AuthStateContext.Consumer>
   );

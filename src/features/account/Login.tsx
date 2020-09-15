@@ -1,22 +1,22 @@
-import './Login.scss';
-import React from 'react';
-import { Redirect } from 'react-router-dom';
-import { Container, Grid, Button, CircularProgress } from '@material-ui/core';
-import useKeycloakWrapper from '../../hooks/useKeycloakWrapper';
-import { useQuery } from '../../hooks/use-query';
+import "./Login.scss";
+import React from "react";
+import { Redirect } from "react-router-dom";
+import { Container, Grid, Button, CircularProgress } from "@material-ui/core";
+import useKeycloakWrapper from "../../hooks/useKeycloakWrapper";
+import { useQuery } from "../../hooks/use-query";
 
 const Login = () => {
   const { redirect } = useQuery();
   const keyCloakWrapper = useKeycloakWrapper();
   const keycloak = keyCloakWrapper.obj;
-  
-  if (!keycloak) {
+
+  if (!keycloak) {  
     return <CircularProgress></CircularProgress>;
   }
-  
+
   if (keycloak?.authenticated) {
     // already logged in
-    return <Redirect to={redirect || '/home'} />;
+    return <Redirect to={redirect || "/home"} />;
   }
 
   return (
@@ -25,11 +25,20 @@ const Login = () => {
       <Grid container direction="row">
         <Grid item xs={1} md={3} />
         <Grid item xs={12} md={6} className="block">
-          <Button variant="contained" color="primary" onClick={() => keycloak.login()}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => keycloak.login()}
+          >
             Sign In
           </Button>
           <p className="or">Or</p>
-          <Button className="border border-dark" variant="outlined" color="secondary" onClick={() => keycloak.register()}>
+          <Button
+            className="border border-dark"
+            variant="outlined"
+            color="secondary"
+            onClick={() => keycloak.register()}
+          >
             Sign Up
           </Button>
         </Grid>

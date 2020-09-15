@@ -1,11 +1,16 @@
 import { IonApp } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { KeycloakProvider } from "@react-keycloak/web";
-import Keycloak, { KeycloakConfig, KeycloakInstance } from "keycloak-js";
+import Keycloak, {
+  KeycloakConfig,
+  KeycloakInitOptions,
+  KeycloakInstance,
+} from "keycloak-js";
 import React from "react";
 import App from "./App";
 import { AuthStateContextProvider } from "./contexts/authStateContext";
 import getKeycloakEventHandler from "./utils/KeycloakEventHandler";
+import { CircularProgress } from "@material-ui/core";
 
 /* Theme variables */
 import "./theme/variables.css";
@@ -25,24 +30,41 @@ import "@ionic/react/css/text-alignment.css";
 import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
-import { CircularProgress } from "@material-ui/core";
+import { DeviceInfo } from "@capacitor/core";
 
-const keycloakConfig: KeycloakConfig = {
-  realm: "dfmlcg7z",
-  url: "https://sso-dev.pathfinder.gov.bc.ca/auth/",
-  clientId: "invasives-bc",
-};
+const IonicApp: React.FC = (props: { children?: null; info?: DeviceInfo }) => {
+  const keycloakConfig: KeycloakConfig = {
+    realm: "dfmlcg7z",
+    url: "https://sso-dev.pathfinder.gov.bc.ca/auth/",
+    clientId: "invasives-bc",
+  };
 
-//@ts-ignore
-const keycloak: KeycloakInstance = new Keycloak(keycloakConfig);
+  //@ts-ignore
+  const keycloak: KeycloakInstance = new Keycloak(keycloakConfig);
 
-const IonicApp: React.FC = () => {
+  let initConfig = null;
+
+  if (window["cordova"]) {
+    initConfig = {
+      ...initConfig,
+      ...{
+        flow: "hybrid",
+        redirectUri: "http://127.0.0.1",
+        checkLoginIframe: false,
+        onLoad: "login-required",
+      },
+    };
+  } else {
+    initConfig = { onLoad: "login-required" };
+  }
+
   return (
     <IonApp>
       <KeycloakProvider
         keycloak={keycloak}
+        initConfig={initConfig}
         LoadingComponent={<CircularProgress />}
-        onEvent={getKeycloakEventHandler(keycloak)}
+        onEvent={() => getKeycloakEventHandler(keycloak)}
       >
         <AuthStateContextProvider>
           <IonReactRouter>

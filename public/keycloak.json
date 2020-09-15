@@ -1,15 +1,16 @@
 {
     "realm": "dfmlcg7z",
-    "url": "https://sso-dev.pathfinder.gov.bc.ca/auth/",
+    "auth-server-url": "https://sso-dev.pathfinder.gov.bc.ca/auth/",
     "ssl-required": "external",
-    "resource": "react",
+    "resource": "invasives-bc",
+    "public-client": true,
     "confidential-port": 0,
     "clients": [
         {
             "clientId": "invasives-bc",
             "enabled": true,
             "publicClient": true,
-            "redirectUris": ["http://localhost"]
+            "redirectUris": ["http://127.0.0.1"]
         }
     ]
 }
