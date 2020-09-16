@@ -114,24 +114,25 @@ const FormContainer: React.FC<any> = (props: any) => {
 
   const [formData, setFormData] = useState({ activityType: "LAME" });
 
-  const setupCollection = async () => {
-    if (!database) {
-      // database not yet set up
-      return;
-    }
+//   const setupCollection = async () => {
+//     if (!database) {
+//       // database not yet set up
+//       return;
+//     }
 
-    if (database.activities) {
-      // collection already exists
-      return;
-    }
+//     if (database.activities) {
+//       // collection already exists
+//       return;
+//     }
 
-    const table = await database.collection({
-      name: "activities",
-      schema: { ...props.schema, version: 0 },
-    });
+//     console.log(props.schema);
+//     const table = await database.collection({
+//       name: "activities",
+//       schema: { ...props.schema, version: 0 },
+//     });
 
-    setCollection(table);
-  };
+//     setCollection(table);
+//   };
 
   const submitEventHandler = async (event: any) => {
     // await collection.insert(event.formData);
@@ -139,9 +140,9 @@ const FormContainer: React.FC<any> = (props: any) => {
     // results.map((item) => console.log(item.toJSON()));
   };
 
-  useEffect(() => {
-    setupCollection();
-  }, [database]);
+//   useEffect(() => {
+//     setupCollection();
+//   }, [database]);
 
   return (
     <div>
