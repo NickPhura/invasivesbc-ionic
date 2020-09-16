@@ -28,7 +28,7 @@ const AdminContainer: React.FC = () => {
         Fetch Activity
       </button>
       <p>{activityId}</p>
-      <p>{activity}</p>
+      <p>{activity && JSON.stringify(activity)}</p>
     </div>
   );
 };

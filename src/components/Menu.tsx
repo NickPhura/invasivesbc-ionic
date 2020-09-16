@@ -1,24 +1,25 @@
-import { List, ListItem, ListItemText, ListItemIcon } from "@material-ui/core";
-import { PriorityHigh } from "@material-ui/icons";
+import {
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  SvgIcon,
+} from "@material-ui/core";
+import {
+  Assignment,
+  Photo,
+  Map,
+  Lock,
+  SvgIconComponent,
+} from "@material-ui/icons";
 
 import React from "react";
 import { useHistory } from "react-router-dom";
-import {
-  imagesOutline,
-  imagesSharp,
-  fileTrayOutline,
-  fileTraySharp,
-  mapOutline,
-  mapSharp,
-  lockClosedOutline,
-  lockClosedSharp,
-} from "ionicons/icons";
 import "./Menu.css";
 
 interface AppPage {
   url: string;
-  iosIcon: string;
-  mdIcon: string;
+  icon: SvgIconComponent;
   title: string;
 }
 
@@ -26,26 +27,22 @@ const appPages: AppPage[] = [
   {
     title: "Form",
     url: "/home/Form",
-    iosIcon: fileTrayOutline,
-    mdIcon: fileTraySharp,
+    icon: Assignment,
   },
   {
     title: "Photo Gallery",
     url: "/home/photo",
-    iosIcon: imagesOutline,
-    mdIcon: imagesSharp,
+    icon: Photo,
   },
   {
     title: "Map",
     url: "/home/map",
-    iosIcon: mapOutline,
-    mdIcon: mapSharp,
+    icon: Map,
   },
   {
     title: "Admin",
     url: "/home/admin",
-    iosIcon: lockClosedOutline,
-    mdIcon: lockClosedSharp,
+    icon: Lock,
   },
 ];
 
@@ -62,7 +59,7 @@ const SideMenu: React.FC = (props) => {
             onClick={() => history.push(appPage.url)}
           >
             <ListItemIcon>
-              <PriorityHigh />
+              <SvgIcon component={appPage.icon} />
             </ListItemIcon>
             <ListItemText>{appPage.title}</ListItemText>
           </ListItem>
