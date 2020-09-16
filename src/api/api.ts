@@ -40,9 +40,25 @@ export const useInvasivesApi = () => {
     // const { keycloak } = useKeycloak();
     // const [data, setData] = useState<ICrudData<IActivity>>({ data: [], loaded: false });
 
+    /**
+     * Fetch a signle activity by its id.
+     *
+     * @param {string} activityId
+     * @return {*}  {Promise<AxiosResponse<IActivity>>}
+     */
     const getActivityById = async (activityId: string): Promise<AxiosResponse<IActivity>> => {
         return api.get(`/api/activity/${activityId}`);
     };
+
+    /**
+     * Create a new activity record.
+     *
+     * @param {*} activity
+     * @return {*}  {Promise<AxiosResponse<any>>}
+     */
+    const createActivity = async (activity: any): Promise<AxiosResponse<any>> => {
+        return api.post('/api/activity', activity);
+    }
 
     //   const list = useCallback(
     //     async (query?: string): Promise<IActivity[]> => {
@@ -136,6 +152,7 @@ export const useInvasivesApi = () => {
 
     return {
         getActivityById,
+        createActivity
         // list,
         // filter,
         // create,

@@ -1,16 +1,13 @@
 import { IonApp } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { KeycloakProvider } from "@react-keycloak/web";
-import Keycloak, {
-  KeycloakConfig,
-  KeycloakInitOptions,
-  KeycloakInstance,
-} from "keycloak-js";
+import Keycloak, { KeycloakConfig, KeycloakInstance } from "keycloak-js";
 import React from "react";
 import App from "./App";
 import { AuthStateContextProvider } from "./contexts/authStateContext";
 import getKeycloakEventHandler from "./utils/KeycloakEventHandler";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress, makeStyles } from "@material-ui/core";
+import { DeviceInfo } from "@capacitor/core";
 
 /* Theme variables */
 import "./theme/variables.css";
@@ -30,9 +27,17 @@ import "@ionic/react/css/text-alignment.css";
 import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
-import { DeviceInfo } from "@capacitor/core";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    height: "100vh",
+    display: "flex",
+  },
+}));
 
 const IonicApp: React.FC = (props: { children?: null; info?: DeviceInfo }) => {
+  const classes = useStyles();
+
   const keycloakConfig: KeycloakConfig = {
     realm: "dfmlcg7z",
     url: "https://sso-dev.pathfinder.gov.bc.ca/auth/",
@@ -59,12 +64,12 @@ const IonicApp: React.FC = (props: { children?: null; info?: DeviceInfo }) => {
   }
 
   return (
-    <IonApp>
+    <IonApp className={classes.root}>
       <KeycloakProvider
         keycloak={keycloak}
         initConfig={initConfig}
         LoadingComponent={<CircularProgress />}
-        onEvent={() => getKeycloakEventHandler(keycloak)}
+        onEvent={getKeycloakEventHandler(keycloak)}
       >
         <AuthStateContextProvider>
           <IonReactRouter>

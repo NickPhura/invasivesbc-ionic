@@ -1,25 +1,38 @@
 import { KeycloakEventHandler } from '@react-keycloak/web';
 import { KeycloakInstance } from 'keycloak-js';
 
-export const JWT_TOKEN_KEY = 'jwtToken';
-
 const getKeycloakEventHandler = (keycloak: KeycloakInstance) => {
-  const keycloakEventHandler: KeycloakEventHandler = (event, error) => {
-    if (event === 'onAuthSuccess') {
-      console.log('keycloak onAuthSuccess', event);
-      console.log('token', keycloak.token);
-      // localStorage.setItem(JWT_TOKEN_KEY, keycloak.token!);
-    } else if (event === 'onAuthRefreshSuccess') {
-      console.log('keycloak onAuthRefreshSuccess', event);
-      // localStorage.setItem(JWT_TOKEN_KEY, keycloak.token!);
-    } else if (event === 'onAuthLogout') {
-      console.log('keycloak onAuthLogout', event);
-      // localStorage.clear();
-    } else {
-      console.debug(`keycloak event: ${event} error ${error}`);
-    }
-  };
-  return keycloakEventHandler;
+    const keycloakEventHandler: KeycloakEventHandler = (event, error) => {
+        switch (event) {
+            case 'onReady':
+                console.log('keycloak onReady');
+                break;
+            case 'onAuthSuccess':
+                console.log('keycloak onAuthSuccess');
+                break;
+            case 'onAuthError':
+                console.log('keycloak onAuthError', error);
+                break;
+            case 'onAuthLogout':
+                console.log('keycloak onAuthLogout');
+                break;
+            case 'onAuthRefreshError':
+                console.log('keycloak onAuthRefreshError', error);
+                break;
+            case 'onAuthRefreshSuccess':
+                console.log('keycloak onAuthRefreshSuccess');
+                break;
+            case 'onInitError':
+                console.log('keycloak onInitError', error);
+                break;
+            case 'onTokenExpired':
+                console.log('keycloak onTokenExpired', error);
+                break;
+            default:
+                console.debug(`keycloak event: ${event} error ${error}`);
+        }
+    };
+    return keycloakEventHandler;
 };
 
 export default getKeycloakEventHandler;

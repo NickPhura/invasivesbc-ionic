@@ -1,29 +1,25 @@
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import React from 'react';
-import MapContainer from '../../components/map/MapContainer';
-import './MapPage.css';
+import clsx from "clsx";
+import { Container, makeStyles } from "@material-ui/core";
+import React from "react";
+import MapContainer from "../../components/map/MapContainer";
+import "./MapPage.css";
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    height: "100%",
+  },
+}));
 
 const MapPage: React.FC = (props: any) => {
-  return (
-    <>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonMenuButton />
-          </IonButtons>
-          <IonTitle>{props.name}</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+  const classes = useStyles();
 
-      <IonContent fullscreen> 
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">{props.name}</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <MapContainer />
-      </IonContent>
-    </>
+  return (
+    <Container
+      maxWidth="lg"
+      className={clsx(props.classes.container, classes.container)}
+    >
+      <MapContainer />;
+    </Container>
   );
 };
 
