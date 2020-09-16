@@ -30,6 +30,11 @@ const appPages: AppPage[] = [
     icon: Assignment,
   },
   {
+    title: "Observation: Terrestrial Invasive Plant",
+    url: "/home/observationTerrestrialInvasivePlant",
+    icon: Assignment,
+  },
+  {
     title: "Photo Gallery",
     url: "/home/photo",
     icon: Photo,

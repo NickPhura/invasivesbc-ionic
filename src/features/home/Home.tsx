@@ -1,5 +1,6 @@
 import SideMenu from "../../components/Menu";
 import FormPage from "../../pages/form/FormPage";
+import Observation_TerrestrialInvasivePlant from "../../pages/form/Observation_TerrestrialPlant";
 import MapPage from "../../pages/map/MapPage";
 import PhotoPage from "../../pages/photo/PhotoPage";
 import AdminPage from "../../pages/admin/AdminPage";
@@ -18,6 +19,13 @@ const Home: React.FC<IHome> = (props: { classes?: any }) => {
         path="/home/form"
         render={(routerProps: any) => (
           <FormPage {...routerProps} {...props} name="Form" />
+        )}
+        exact
+      />
+      <Route
+        path="/home/observationTerrestrialInvasivePlant"
+        render={(routerProps: any) => (
+          <Observation_TerrestrialInvasivePlant {...routerProps} {...props} name="Observation: Terrestrial Invasive Plant" />
         )}
         exact
       />

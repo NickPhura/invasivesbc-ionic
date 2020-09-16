@@ -13,143 +13,19 @@ import * as RxDB from "rxdb";
 import { DatabaseContext } from "../../contexts/DatabaseContext";
 import { useInvasivesApi } from "../../api/api";
 
-// react json schema form related:
-const schema = {
-  type: "object",
-  properties: {
-    activityType: {
-      type: "string",
-      title: "Activity Type",
-    },
-    activityTypeData: {
-      type: "object",
-      title: "Activity Type Data",
-    },
-    activitySubType: {
-      type: "string",
-      title: "Activity Sub-Type",
-    },
-    activitySubTypeData: {
-      type: "object",
-      title: "Activity Sub-Type Data",
-    },
-    date: {
-      type: "string",
-      title: "Date",
-      description: "Date in YYYY-MM-DD format",
-    },
-    locationAndGeometry: {
-      type: "object",
-      additionalProperties: false,
-      description: "Location and geometry information",
-      title: "Location and Geometry",
-      properties: {
-        anchorPointY: {
-          type: "number",
-          title: "Anchor Point Y",
-        },
-        anchorPointX: {
-          type: "number",
-          title: "Anchor Point X",
-        },
-        area: {
-          type: "number",
-          title: "Area",
-        },
-        jurisdiction: {
-          type: "string",
-          title: "Jurisdiction",
-        },
-        agency: {
-          type: "string",
-          title: "Agency",
-        },
-        observer1FirstName: {
-          type: "string",
-          title: "First Name",
-        },
-        observer1LastName: {
-          type: "string",
-          title: "Last Name",
-        },
-        locationComment: {
-          type: "string",
-          title: "Location Comment",
-        },
-        generalComment: {
-          type: "string",
-          title: "General Comment",
-        },
-        photoTaken: {
-          type: "boolean",
-          title: "Photo Taken",
-        },
-      },
-    },
-  },
-};
 
-const uiSchema = {
-  activityType: {
-    "ui:autofocus": true,
-  },
-  activityTypeData: {
-    "ui:autofocus": true,
-    "ui:widget": "textarea",
-  },
-  activitySubType: {
-    "ui:autofocus": true,
-  },
-  activitySubTypeData: {
-    "ui:autofocus": true,
-  },
-  date: {
-    "ui:autofocus": true,
-    "ui:widget": "hidden",
-  },
-  locationAndGeometry: {
-    anchorPointY: {
-      "ui:autofocus": true,
-    },
-    anchorPointX: {
-      "ui:autofocus": true,
-    },
-    area: {
-      "ui:autofocus": true,
-    },
-    jurisdiction: {
-      "ui:autofocus": true,
-    },
-    agency: {
-      "ui:autofocus": true,
-    },
-    observer1FirstName: {
-      "ui:autofocus": true,
-    },
-    observer1LastName: {
-      "ui:autofocus": true,
-    },
-    locationComment: {
-      "ui:autofocus": true,
-    },
-    generalComment: {
-      "ui:autofocus": true,
-    },
-    photoTaken: {
-      "ui:autofocus": true,
-      "ui:widget": "radio",
-    },
-  },
-};
-
+/*
 interface IFormControlProps {
   database: RxDB.RxDatabase;
   setFormData: Function;
-}
+  schema?: any;
+  uiSchema?: any;
+}*/
 
 // Form controls:
-const FormControls: React.FC<IFormControlProps> = (
-  props: IFormControlProps
+const FormControls: React.FC<any> = (
+  props: any
+
 ) => {
   const api = useInvasivesApi();
 
@@ -231,7 +107,7 @@ const FormControls: React.FC<IFormControlProps> = (
   );
 };
 
-const FormContainer: React.FC = () => {
+const FormContainer: React.FC<any> = (props: any) => {
   const database = useContext(DatabaseContext);
 
   const [collection, setCollection] = useState(null);
@@ -251,7 +127,7 @@ const FormContainer: React.FC = () => {
 
     const table = await database.collection({
       name: "activities",
-      schema: { ...schema, version: 0 },
+      schema: { ...props.schema, version: 0 },
     });
 
     setCollection(table);
@@ -273,8 +149,8 @@ const FormContainer: React.FC = () => {
 
       <Form
         formData={formData}
-        schema={schema as JSONSchema7}
-        uiSchema={uiSchema}
+        schema={props.schema as JSONSchema7}
+        uiSchema={props.uiSchema}
         onSubmit={submitEventHandler}
       />
     </div>
