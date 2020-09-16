@@ -12,9 +12,10 @@ const PHOTO_STORAGE = "photos";
 export function usePhotoGallery() {
 
     const { getPhoto } = useCamera();
+    console.log("used camera");
     const [photos, setPhotos] = useState<Photo[]>([]);
     const { deleteFile, getUri, readFile, writeFile } = useFilesystem();
-    const { get, set } = useStorage();
+    const { get, set, clear} = useStorage();
     
     useEffect(() => {
       const loadSaved = async () => {
@@ -75,6 +76,8 @@ export function usePhotoGallery() {
         data: base64Data,
         directory: FilesystemDirectory.Data
       });
+
+      console.log("Photo saved to file system with path: " + fileName);
     
       if (isPlatform('hybrid')) {
         // Display the new image by rewriting the 'file://' path to HTTP
@@ -94,10 +97,32 @@ export function usePhotoGallery() {
       }
     };
 
+    const deletePhotos = async () => {
+      const photosString = await get('photos');
+      const photosInStorage = (photosString ? JSON.parse(photosString) : []) as Photo[];
+
+      console.log("Deleting photos from file system:");
+      for (let photo of photosInStorage) {
+        console.log("Deleting photo with path: " + photo.filepath);
+
+        // delete photo from file system
+        const fileDeleted = await deleteFile({
+          path: photo.filepath,
+          directory: FilesystemDirectory.Data
+        });
+      }
+
+      // clear photos from storage
+      clear();
+
+      // clear photo array from useState
+      setPhotos([]);
+    };
 
     return {
       photos,
-      takePhoto
+      takePhoto,
+      deletePhotos
     };
   }
 
