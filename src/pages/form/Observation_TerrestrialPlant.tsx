@@ -72,10 +72,10 @@ const schema = {
                 "Observation_PlantTerrestial"
              },
              {
-                "Observation_AnimalTerrestrial"
+                "$ref": "#/components/schemas/Observation_AnimalTerrestrial"
              },
              {
-                "Observation_AnimalAquatic"
+                "$ref": "#/components/schemas/Observation_AnimalAquatic"
              }
           ]
        }
