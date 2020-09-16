@@ -24,14 +24,24 @@ interface AppPage {
 }
 
 const appPages: AppPage[] = [
+  //   {
+  //     title: "Form",
+  //     url: "/home/Form",
+  //     icon: Assignment,
+  //   },
   {
-    title: "Form",
-    url: "/home/Form",
+    title: "Observation",
+    url: "/home/observation",
     icon: Assignment,
   },
   {
-    title: "Observation: Terrestrial Invasive Plant",
-    url: "/home/observationTerrestrialInvasivePlant",
+    title: "Treatment",
+    url: "/home/treatment",
+    icon: Assignment,
+  },
+  {
+    title: "Monitoring",
+    url: "/home/monitoring",
     icon: Assignment,
   },
   {

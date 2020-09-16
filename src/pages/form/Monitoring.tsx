@@ -309,13 +309,13 @@ const uiSchema = {
   negative_obs_ind: {},
   subType: {
     Number_of_Individuals_observed: {},
-    Life_Stage: {
-      "ui:widget": "textarea",
-    },
+    Life_Stage: {},
     Behaviour: {},
     sample_taken: {},
     sample_number: {},
-    general_comment: {},
+    general_comment: {
+      "ui:widget": "textarea",
+    },
     access_description: {},
     species_density_code: {},
     species_distribution_code: {},
@@ -351,7 +351,7 @@ const uiSchema = {
   },
 };
 
-const Observation_TerrestrialPlant: React.FC = (props: any) => {
+const Monitoring: React.FC = (props: any) => {
   return (
     <Container maxWidth="lg" className={props.classes.container}>
       <FormContainer schema={schema} uiSchema={uiSchema} />
@@ -359,4 +359,4 @@ const Observation_TerrestrialPlant: React.FC = (props: any) => {
   );
 };
 
-export default Observation_TerrestrialPlant;
+export default Monitoring;

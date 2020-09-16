@@ -1,6 +1,7 @@
-import SideMenu from "../../components/Menu";
 import FormPage from "../../pages/form/FormPage";
-import Observation_TerrestrialInvasivePlant from "../../pages/form/Observation_TerrestrialPlant";
+import Observation from "../../pages/form/Observation";
+import Monitoring from "../../pages/form/Monitoring";
+import Treatment from "../../pages/form/Treatment";
 import MapPage from "../../pages/map/MapPage";
 import PhotoPage from "../../pages/photo/PhotoPage";
 import AdminPage from "../../pages/admin/AdminPage";
@@ -15,17 +16,32 @@ export interface IHome {
 const Home: React.FC<IHome> = (props: { classes?: any }) => {
   return (
     <>
-      <Route
+      {/* <Route
         path="/home/form"
         render={(routerProps: any) => (
           <FormPage {...routerProps} {...props} name="Form" />
         )}
         exact
+      /> */}
+
+      <Route
+        path="/home/observation"
+        render={(routerProps: any) => (
+          <Observation {...routerProps} {...props} name="Observation" />
+        )}
+        exact
       />
       <Route
-        path="/home/observationTerrestrialInvasivePlant"
+        path="/home/treatment"
         render={(routerProps: any) => (
-          <Observation_TerrestrialInvasivePlant {...routerProps} {...props} name="Observation: Terrestrial Invasive Plant" />
+          <Treatment {...routerProps} {...props} name="Treatment" />
+        )}
+        exact
+      />
+      <Route
+        path="/home/monitoring"
+        render={(routerProps: any) => (
+          <Monitoring {...routerProps} {...props} name="Monitoring" />
         )}
         exact
       />
