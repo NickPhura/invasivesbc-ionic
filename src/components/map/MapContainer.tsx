@@ -20,12 +20,20 @@ class MapContainer extends Component {
 
     L.control.zoom({ position: "bottomright" }).addTo(map);
 
-    L.tileLayer(
-      "https://maps.gov.bc.ca/arcgis/rest/services/province/roads_wm/MapServer/tile/{z}/{y}/{x}",
+    const esriBase = L.tileLayer(
+      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
       {
-        maxZoom: 18,
+        maxZoom: 24,
       }
     ).addTo(map);
+
+    const bcBase = L.tileLayer(
+      "https://maps.gov.bc.ca/arcgis/rest/services/province/roads_wm/MapServer/tile/{z}/{y}/{x}",
+      {
+        maxZoom: 24,
+      }
+    ).addTo(map);
+
 
     var drawnItems = new L.FeatureGroup();
 
@@ -45,6 +53,13 @@ class MapContainer extends Component {
     });
 
     map.addControl(drawControl);
+
+    const baseLayers = {
+      "Esri Imagery": esriBase,
+      "BC Government": bcBase
+    }
+
+    L.control.layers(baseLayers).addTo(map);
 
     setTimeout(function () {
       map.invalidateSize();
