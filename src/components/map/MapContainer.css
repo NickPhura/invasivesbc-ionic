@@ -7,6 +7,10 @@
   transform: translateY(-50%);
 }
 
+.MuiContainer-root {
+  padding: 0 !important;
+}
+
 .container strong {
   font-size: 20px;
   line-height: 26px;
