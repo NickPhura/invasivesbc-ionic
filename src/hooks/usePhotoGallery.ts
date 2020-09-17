@@ -107,8 +107,7 @@ export function usePhotoGallery() {
 
         // delete photo from file system
         const fileDeleted = await deleteFile({
-          path: photo.filepath,
-          directory: FilesystemDirectory.Data
+          path: photo.filepath
         });
       }
 
