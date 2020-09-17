@@ -25,15 +25,13 @@ const AppRoute: React.FC<IAppRouteProps> = ({
   document.title = title;
 
   if (!!usePrivateRoute) {
-    return (
-      <PrivateRoute {...rest} component={Component} layout={Layout} role={role} claim={claim} />
-    );
+    return <PrivateRoute {...rest} component={Component} layout={Layout} role={role} claim={claim} />;
   }
 
   return (
     <Route
       {...rest}
-      render={props => (
+      render={(props) => (
         <Layout>
           <Component {...props} />
         </Layout>

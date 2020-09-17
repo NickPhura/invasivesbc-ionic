@@ -1,16 +1,16 @@
-import clsx from "clsx";
-import { Container, makeStyles } from "@material-ui/core";
-import React from "react";
-import MapContainer from "components/map/MapContainer";
+import clsx from 'clsx';
+import { Container, makeStyles } from '@material-ui/core';
+import React from 'react';
+import MapContainer from 'components/map/MapContainer';
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    height: "100%",
+    height: '100%'
   },
   map: {
-    height: "100%",
-    width: "100%",
-  },
+    height: '100%',
+    width: '100%'
+  }
 }));
 
 interface IMapProps {

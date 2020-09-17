@@ -1,14 +1,7 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "@material-ui/core";
-import React from "react";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
+import React from 'react';
 
-const ErrorDialog: React.FC = (props) => {
+const ErrorDialog: React.FC = (props: any) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -28,13 +21,10 @@ const ErrorDialog: React.FC = (props) => {
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
+        aria-describedby="alert-dialog-description">
         <DialogTitle id="alert-dialog-title">Error</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            {props.error.message}
-          </DialogContentText>
+          <DialogContentText id="alert-dialog-description">{props.error.message}</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">

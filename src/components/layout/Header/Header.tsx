@@ -1,7 +1,7 @@
-import "./Header.scss";
+import './Header.scss';
 
-import React from "react";
-import { AppBar, Toolbar } from "@material-ui/core";
+import React from 'react';
+import { AppBar, Toolbar } from '@material-ui/core';
 
 const Header = () => {
   return (

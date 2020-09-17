@@ -16,32 +16,19 @@ const AppRouter: React.FC = () => {
   return (
     <Switch>
       <Redirect exact from="/" to="/login" />
-      <AppRoute
-          path="/login"
-          title={getTitle('Login')}
-          component={Login}
-          layout={PublicLayout}
-      ></AppRoute>
+      <AppRoute path="/login" title={getTitle('Login')} component={Login} layout={PublicLayout}></AppRoute>
       <AppRoute path="/logout" title={getTitle('Logout')} component={LogoutPage}></AppRoute>
       <AppRoute
-          path="/forbidden"
-          title={getTitle('Forbidden')}
-          component={AccessDenied}
-          layout={PublicLayout}
-      ></AppRoute>
+        path="/forbidden"
+        title={getTitle('Forbidden')}
+        component={AccessDenied}
+        layout={PublicLayout}></AppRoute>
       <AppRoute
-          path="/page-not-found"
-          title={getTitle('Page Not Found')}
-          component={NotFoundPage}
-          layout={PublicLayout}
-      ></AppRoute>
-      <AppRoute
-          protected
-          path="/home"
-          component={Home}
-          layout={AuthLayout}
-          title={getTitle('Home')}
-      />
+        path="/page-not-found"
+        title={getTitle('Page Not Found')}
+        component={NotFoundPage}
+        layout={PublicLayout}></AppRoute>
+      <AppRoute protected path="/home" component={Home} layout={AuthLayout} title={getTitle('Home')} />
       <AppRoute title="*" path="*" component={() => <Redirect to="/page-not-found" />} />
     </Switch>
   );
