@@ -1,5 +1,5 @@
 import React from "react";
-// import { useConfiguration } from '../../hooks/useConfiguration';
+// import { useConfiguration } from 'hooks/useConfiguration';
 
 import { Redirect } from "react-router";
 

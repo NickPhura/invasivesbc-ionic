@@ -2,8 +2,8 @@ import "./Login.scss";
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { Container, Grid, Button, CircularProgress } from "@material-ui/core";
-import useKeycloakWrapper from "../../hooks/useKeycloakWrapper";
-import { useQuery } from "../../hooks/use-query";
+import useKeycloakWrapper from "hooks/useKeycloakWrapper";
+import { useQuery } from "hooks/use-query";
 
 const Login = () => {
   const { redirect } = useQuery();

@@ -15,7 +15,6 @@ import {
 
 import React from "react";
 import { useHistory } from "react-router-dom";
-import "./Menu.css";
 
 interface AppPage {
   url: string;
@@ -24,11 +23,6 @@ interface AppPage {
 }
 
 const appPages: AppPage[] = [
-  //   {
-  //     title: "Form",
-  //     url: "/home/Form",
-  //     icon: Assignment,
-  //   },
   {
     title: "Observation",
     url: "/home/observation",

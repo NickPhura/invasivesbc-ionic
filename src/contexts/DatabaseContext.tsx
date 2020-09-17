@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 export const DatabaseContext = React.createContext(null);
 
-export const DatabaseContextProvider = (props: { children?: any }) => {
+export const DatabaseContextProvider: React.FC = (props) => {
   const [database, setDatabase] = useState(null);
 
   const setupDatabase = async () => {

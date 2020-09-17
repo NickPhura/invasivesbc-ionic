@@ -1,5 +1,5 @@
 import { useKeycloak } from '@react-keycloak/web';
-import { Roles } from '../constants/roles';
+import { Roles } from 'constants/roles';
 
 /**
  * IUserInfo interface, represents the userinfo provided by keycloak.

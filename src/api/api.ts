@@ -1,7 +1,7 @@
 import { useMemo, useCallback, useState, useEffect } from 'react';
 import axios, { AxiosResponse } from 'axios';
 import { useKeycloak } from '@react-keycloak/web';
-import { IActivityFilter, IActivity } from './interfaces';
+import { IActivityFilter, IActivity } from 'interfaces';
 import { stringify } from 'query-string';
 
 // interface ICrudData<T extends object = {}> {
@@ -58,6 +58,15 @@ export const useInvasivesApi = () => {
      */
     const createActivity = async (activity: any): Promise<AxiosResponse<any>> => {
         return api.post('/api/activity', activity);
+    }
+
+    /**
+     * Fetch the api yaml spec.
+     *
+     * @return {*}  {Promise<AxiosResponse<any>>}
+     */
+    const getApiSpec = async (): Promise<AxiosResponse<any>> => {
+        return api.get('/api/api-docs/');
     }
 
     //   const list = useCallback(
@@ -152,7 +161,8 @@ export const useInvasivesApi = () => {
 
     return {
         getActivityById,
-        createActivity
+        createActivity,
+        getApiSpec
         // list,
         // filter,
         // create,
