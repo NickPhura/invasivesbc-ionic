@@ -7,23 +7,21 @@ import {
   Drawer,
   Divider,
   Typography,
-  Badge,
   Toolbar,
 } from "@material-ui/core";
-import { Notifications, Menu, ChevronLeft } from "@material-ui/icons";
+import { Menu, ChevronLeft } from "@material-ui/icons";
 import React from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import ErrorDialog from "../components/common/ErrorDialog";
-import Footer from "../components/layout/Footer/Footer";
-import Header from "../components/layout/Header/Header";
-import SideMenu from "../components/Menu";
+import ErrorDialog from "components/common/ErrorDialog";
+import SideMenu from "components/menu/SideMenu";
 import "./PublicLayout.scss";
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   publicLayoutRoot: {
-    display: "flex",
     height: "100%",
+    width: "100%",
+    display: "flex",
   },
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
@@ -63,7 +61,6 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     whiteSpace: "nowrap",
     width: drawerWidth,
-    // marginTop: "-64px",
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -76,7 +73,6 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     width: theme.spacing(7),
-    // marginTop: "-64px",
     [theme.breakpoints.up("sm")]: {
       width: theme.spacing(9),
     },
@@ -100,15 +96,6 @@ const useStyles = makeStyles((theme) => ({
     height: 240,
   },
 }));
-
-// render() {
-//     const checkboxes = React.Children.map(this.props.children, checkbox =>
-//       React.cloneElement(checkbox, {
-//         name: this.props.name,
-//         checked: this.props.checkedValues.includes(checkbox.props.value),
-//         onChange: this.handleCheckboxChange.bind(this)
-//       })
-//     );
 
 const PublicLayout: React.FC = (props) => {
   const classes = useStyles();
@@ -152,11 +139,6 @@ const PublicLayout: React.FC = (props) => {
           >
             Invasives BC
           </Typography>
-          {/* <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <Notifications />
-            </Badge>
-          </IconButton> */}
         </Toolbar>
       </AppBar>
       <Drawer
@@ -183,22 +165,6 @@ const PublicLayout: React.FC = (props) => {
       </main>
     </div>
   );
-
-  //   return (
-  //     <>
-  //       <div className="App-wrapper">
-  //         <Header />
-  //         <Container className="App-content">
-  //           <ErrorBoundary FallbackComponent={ErrorDialog}>
-  //             {React.Children.map(props.children, (child: any) =>
-  //               React.cloneElement(child, { useStyles })
-  //             )}
-  //           </ErrorBoundary>
-  //         </Container>
-  //         <Footer />
-  //       </div>
-  //     </>
-  //   );
 };
 
 export default PublicLayout;

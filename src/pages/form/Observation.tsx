@@ -1,7 +1,6 @@
 import { Container } from "@material-ui/core";
 import React from "react";
 import FormContainer from "../../components/form/FormContainer";
-import "./FormPage.css";
 
 // react json schema form related:
 const schema = {
@@ -351,12 +350,16 @@ const uiSchema = {
   },
 };
 
-const Observation_TerrestrialPlant: React.FC = (props: any) => {
+interface IObservationProps {
+  classes?: any;
+}
+
+const Observation: React.FC<IObservationProps> = (props) => {
   return (
-    <Container maxWidth="lg" className={props.classes.container}>
+    <Container className={props.classes.container}>
       <FormContainer schema={schema} uiSchema={uiSchema} />
     </Container>
   );
 };
 
-export default Observation_TerrestrialPlant;
+export default Observation;

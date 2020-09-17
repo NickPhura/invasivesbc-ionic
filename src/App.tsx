@@ -1,41 +1,74 @@
-import React from "react";
-import { DatabaseContextProvider } from "./contexts/DatabaseContext";
-import { AuthStateContext, IAuthState } from "./contexts/authStateContext";
-import { CircularProgress } from "@material-ui/core";
-import AppRouter from "./AppRouter";
+import { DeviceInfo } from '@capacitor/core';
+import { IonReactRouter } from '@ionic/react-router';
+import { CircularProgress, makeStyles } from '@material-ui/core';
+import { KeycloakProvider } from '@react-keycloak/web';
+import Keycloak, { KeycloakConfig, KeycloakInstance } from 'keycloak-js';
+import React from 'react';
+import AppRouter from './AppRouter';
+import { AuthStateContext, AuthStateContextProvider, IAuthState } from './contexts/authStateContext';
+import { DatabaseContextProvider } from './contexts/DatabaseContext';
+import getKeycloakEventHandler from './utils/KeycloakEventHandler';
 
-/* Core CSS required for Ionic components to work properly */
-import "@ionic/react/css/core.css";
+const useStyles = makeStyles(() => ({
+  root: {
+    height: '100vh',
+    width: '100vw',
+    display: 'flex'
+  }
+}));
 
-/* Basic CSS for apps built with Ionic */
-import "@ionic/react/css/normalize.css";
-import "@ionic/react/css/structure.css";
-import "@ionic/react/css/typography.css";
+const App: React.FC<{ info: DeviceInfo }> = props => {
+  const classes = useStyles();
 
-/* Optional CSS utils that can be commented out */
-import "@ionic/react/css/padding.css";
-import "@ionic/react/css/float-elements.css";
-import "@ionic/react/css/text-alignment.css";
-import "@ionic/react/css/text-transformation.css";
-import "@ionic/react/css/flex-utils.css";
-import "@ionic/react/css/display.css";
+  const keycloakConfig: KeycloakConfig = {
+    realm: 'dfmlcg7z',
+    url: 'https://sso-dev.pathfinder.gov.bc.ca/auth/',
+    clientId: 'invasives-bc'
+  };
 
-/* Theme variables */
-import "./theme/variables.css";
+  //@ts-ignore
+  const keycloak: KeycloakInstance = new Keycloak(keycloakConfig);
 
-const App: React.FC = () => {
+  let initConfig = null;
+
+  if (window['cordova']) {
+    initConfig = {
+      ...initConfig,
+      ...{
+        flow: 'hybrid',
+        redirectUri: 'http://127.0.0.1',
+        checkLoginIframe: false,
+        onLoad: 'login-required'
+      }
+    };
+  } else {
+    initConfig = { onLoad: 'login-required' };
+  }
+
   return (
-    <DatabaseContextProvider>
-      <AuthStateContext.Consumer>
-        {(context: IAuthState) => {
-          if (!context.ready) {
-            return <CircularProgress />;
-          }
+    <div className={classes.root}>
+      <KeycloakProvider
+        keycloak={keycloak}
+        initConfig={initConfig}
+        LoadingComponent={<CircularProgress />}
+        onEvent={getKeycloakEventHandler(keycloak)}>
+        <AuthStateContextProvider>
+          <IonReactRouter>
+            <DatabaseContextProvider>
+              <AuthStateContext.Consumer>
+                {(context: IAuthState) => {
+                  if (!context.ready) {
+                    return <CircularProgress />;
+                  }
 
-          return <AppRouter />;
-        }}
-      </AuthStateContext.Consumer>
-    </DatabaseContextProvider>
+                  return <AppRouter />;
+                }}
+              </AuthStateContext.Consumer>
+            </DatabaseContextProvider>
+          </IonReactRouter>
+        </AuthStateContextProvider>
+      </KeycloakProvider>
+    </div>
   );
 };
 

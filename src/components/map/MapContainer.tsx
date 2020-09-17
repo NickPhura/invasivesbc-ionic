@@ -1,18 +1,15 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import * as L from "leaflet";
 import "leaflet-draw";
-import "./MapContainer.css";
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
 
-class MapContainer extends Component {
-  constructor(props: any) {
-    super(props);
+interface IMapContainerProps {
+  classes?: any;
+}
 
-    console.log("Map Constructor!");
-  }
-
-  async componentDidMount() {
+const MapContainer: React.FC<IMapContainerProps> = (props) => {
+  const renderMap = () => {
     console.log("Map componentDidMount!");
 
     var map = L.map("map", { zoomControl: false }).setView([55, -128], 10);
@@ -33,7 +30,6 @@ class MapContainer extends Component {
         maxZoom: 24,
       }
     ).addTo(map);
-
 
     var drawnItems = new L.FeatureGroup();
 
@@ -56,8 +52,8 @@ class MapContainer extends Component {
 
     const baseLayers = {
       "Esri Imagery": esriBase,
-      "BC Government": bcBase
-    }
+      "BC Government": bcBase,
+    };
 
     L.control.layers(baseLayers).addTo(map);
 
@@ -116,11 +112,11 @@ class MapContainer extends Component {
     map.on("draw:deletestop", function () {
       console.log("deletestop");
     });
-  }
-
-  render = () => {
-    return <div id="map"> </div>;
   };
-}
+
+  useEffect(() => renderMap(), []);
+
+  return <div id="map" className={props.classes.map} />;
+};
 
 export default MapContainer;

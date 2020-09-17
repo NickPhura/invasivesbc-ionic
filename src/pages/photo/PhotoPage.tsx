@@ -1,19 +1,17 @@
-import {
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonMenuButton,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-  IonFabList,
-} from "@ionic/react";
+import { Container } from "@material-ui/core";
+import PhotoContainer from "components/photo/PhotoContainer";
 import React from "react";
-import PhotoContainer from "../../components/photo/PhotoContainer";
-import "./PhotoPage.css";
 
-const PhotoPage: React.FC = (props: any) => {
-  return <PhotoContainer />;
+interface IPhotoProps {
+  classes?: any;
+}
+
+const PhotoPage: React.FC<IPhotoProps> = (props) => {
+  return (
+    <Container maxWidth="lg" className={props.classes.container}>
+      <PhotoContainer />
+    </Container>
+  );
 };
 
 export default PhotoPage;

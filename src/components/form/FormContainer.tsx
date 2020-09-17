@@ -1,32 +1,24 @@
-import React, { Dispatch } from "react";
+import React from "react";
 import Form from "@rjsf/material-ui";
 import { JSONSchema7 } from "json-schema";
-import "./FormContainer.css";
 
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
+import { Grid, Button, TextField } from "@material-ui/core";
 import { useState, useEffect, useContext } from "react";
 
 // db caching related:
 import * as RxDB from "rxdb";
-import { DatabaseContext } from "../../contexts/DatabaseContext";
-import { useInvasivesApi } from "../../api/api";
+import { DatabaseContext } from "contexts/DatabaseContext";
+import { useInvasivesApi } from "api/api";
 
-
-/*
 interface IFormControlProps {
   database: RxDB.RxDatabase;
   setFormData: Function;
   schema?: any;
   uiSchema?: any;
-}*/
+}
 
 // Form controls:
-const FormControls: React.FC<any> = (
-  props: any
-
-) => {
+const FormControls: React.FC<IFormControlProps> = (props) => {
   const api = useInvasivesApi();
 
   // needed for fetch:
@@ -107,42 +99,74 @@ const FormControls: React.FC<any> = (
   );
 };
 
-const FormContainer: React.FC<any> = (props: any) => {
+interface IFormContainerProps {
+  schema?: any;
+  uiSchema?: any;
+}
+
+const FormContainer: React.FC<IFormContainerProps> = (props) => {
+  const api = useInvasivesApi();
+
   const database = useContext(DatabaseContext);
+
+  const [schema, setSchema] = useState({ properties: {} });
 
   const [collection, setCollection] = useState(null);
 
   const [formData, setFormData] = useState({ activityType: "LAME" });
 
-//   const setupCollection = async () => {
-//     if (!database) {
-//       // database not yet set up
-//       return;
-//     }
+  const setupCollection = async () => {
+    if (!database) {
+      // database not yet set up
+      return;
+    }
 
-//     if (database.activities) {
-//       // collection already exists
-//       return;
-//     }
+    if (database.activities) {
+      // collection already exists
+      if (!collection) {
+        // set existing collection if not already set
+        setCollection(database.activities);
+      }
+      return;
+    }
 
-//     console.log(props.schema);
-//     const table = await database.collection({
-//       name: "activities",
-//       schema: { ...props.schema, version: 0 },
-//     });
+    console.log(props.schema);
+    const table = await database.collection({
+      name: "activities",
+      schema: { ...props.schema, version: 0 },
+    });
 
-//     setCollection(table);
-//   };
+    setCollection(table);
+  };
 
   const submitEventHandler = async (event: any) => {
+    console.log("submitEventHandler: ", event);
     // await collection.insert(event.formData);
     // const results = await collection.find().exec();
     // results.map((item) => console.log(item.toJSON()));
   };
 
-//   useEffect(() => {
-//     setupCollection();
-//   }, [database]);
+  useEffect(() => {
+    // setupCollection();
+  }, [database]);
+
+  useEffect(() => {
+    const getApiSpec = async () => {
+      const response = await api.getApiSpec();
+      //   console.log(
+      //     response.data.paths["/activity"].post.requestBody.content[
+      //       "application/json"
+      //     ].schema
+      //   );
+      setSchema(
+        response.data.paths["/activity"].post.requestBody.content[
+          "application/json"
+        ].schema
+      );
+    };
+
+    getApiSpec();
+  }, []);
 
   return (
     <div>

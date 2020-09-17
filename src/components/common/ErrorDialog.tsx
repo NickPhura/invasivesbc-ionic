@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import React from "react";
 
-const ErrorDialog = (props: any) => {
+const ErrorDialog: React.FC = (props) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
