@@ -1,6 +1,6 @@
-import React from "react";
-import * as RxDB from "rxdb";
-import { useState, useEffect } from "react";
+import React from 'react';
+import * as RxDB from 'rxdb';
+import { useState, useEffect } from 'react';
 
 export const DatabaseContext = React.createContext(null);
 
@@ -15,24 +15,24 @@ export const DatabaseContextProvider: React.FC = (props) => {
 
     let db: RxDB.RxDatabase;
 
-    if (window["cordova"]) {
-      RxDB.addRxPlugin(require("pouchdb-adapter-cordova-sqlite")); // mobile adapter
+    if (window['cordova']) {
+      RxDB.addRxPlugin(require('pouchdb-adapter-cordova-sqlite')); // mobile adapter
 
       db = await RxDB.createRxDatabase({
-        name: "mydatabase",
-        adapter: "cordova-sqlite", // mobile adapter
+        name: 'mydatabase',
+        adapter: 'cordova-sqlite', // mobile adapter
         pouchSettings: {
-          location: "default",
+          location: 'default'
         },
-        ignoreDuplicate: true,
+        ignoreDuplicate: true
       });
     } else {
-      RxDB.addRxPlugin(require("pouchdb-adapter-indexeddb")); // browser adapter
+      RxDB.addRxPlugin(require('pouchdb-adapter-indexeddb')); // browser adapter
 
       db = await RxDB.createRxDatabase({
-        name: "mydatabase",
-        adapter: "indexeddb", // browser adapter
-        ignoreDuplicate: true,
+        name: 'mydatabase',
+        adapter: 'indexeddb', // browser adapter
+        ignoreDuplicate: true
       });
     }
 
@@ -43,11 +43,7 @@ export const DatabaseContextProvider: React.FC = (props) => {
     setupDatabase();
 
     // TODO return database cleanup here?
-  }, []);
+  }, [setupDatabase]);
 
-  return (
-    <DatabaseContext.Provider value={database}>
-      {props.children}
-    </DatabaseContext.Provider>
-  );
+  return <DatabaseContext.Provider value={database}>{props.children}</DatabaseContext.Provider>;
 };

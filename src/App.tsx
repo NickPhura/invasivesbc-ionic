@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const App: React.FC<{ info: DeviceInfo }> = props => {
+const App: React.FC<{ info: DeviceInfo }> = (props) => {
   const classes = useStyles();
 
   const keycloakConfig: KeycloakConfig = {

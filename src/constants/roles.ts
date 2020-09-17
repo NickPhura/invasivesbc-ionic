@@ -1,3 +1,3 @@
 export const Roles = {
-    SYSTEM_ADMINISTRATOR: 'ADM'
-}
+  SYSTEM_ADMINISTRATOR: 'ADM'
+};

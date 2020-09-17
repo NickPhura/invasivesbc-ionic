@@ -1,6 +1,3 @@
-export interface IActivityFilter {
-}
+export interface IActivityFilter {}
 
-export interface IActivity {
-    
-}
+export interface IActivity {}

@@ -55,7 +55,7 @@ function useKeycloakWrapper(): IKeycloak {
     return (
       claim !== undefined &&
       claim !== null &&
-      (typeof claim === 'string' ? userInfo?.roles?.includes(claim) : claim.some(c => userInfo?.roles?.includes(c)))
+      (typeof claim === 'string' ? userInfo?.roles?.includes(claim) : claim.some((c) => userInfo?.roles?.includes(c)))
     );
   };
 
@@ -67,7 +67,7 @@ function useKeycloakWrapper(): IKeycloak {
     return (
       role !== undefined &&
       role !== null &&
-      (typeof role === 'string' ? userInfo?.groups?.includes(role) : role.some(r => userInfo?.groups?.includes(r)))
+      (typeof role === 'string' ? userInfo?.groups?.includes(role) : role.some((r) => userInfo?.groups?.includes(r)))
     );
   };
 
@@ -130,7 +130,7 @@ function useKeycloakWrapper(): IKeycloak {
     email: email(),
     isAdmin: hasRole(Roles.SYSTEM_ADMINISTRATOR),
     roles: roles(),
-    agencyId: userInfo?.agencies?.find(x => x),
+    agencyId: userInfo?.agencies?.find((x) => x),
     hasRole: hasRole,
     hasClaim: hasClaim,
     hasAgency: hasAgency,

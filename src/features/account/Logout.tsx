@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 // import { useConfiguration } from 'hooks/useConfiguration';
 
-import { Redirect } from "react-router";
+import { Redirect } from 'react-router';
 
 export const LogoutPage = () => {
   return <Redirect to="/login" />;

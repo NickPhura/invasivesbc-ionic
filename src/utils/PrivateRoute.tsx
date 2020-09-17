@@ -21,7 +21,7 @@ const PrivateRoute: React.FC<IPrivateRouteProps> = (props) => {
   return (
     <Route
       {...rest}
-      render={props => {
+      render={(props) => {
         if (!!keycloak.obj?.authenticated) {
           if ((!rest.role && !rest.claim) || keycloak.hasRole(rest.role) || keycloak.hasClaim(rest.claim)) {
             return (

@@ -9,17 +9,17 @@
 // }
 
 .App-wrapper {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
 
 .App-content {
   display: flex;
   flex: 1;
-//   flex-direction: column;
-//   margin-bottom: 100px;
-//   padding-bottom: 100px;
+  //   flex-direction: column;
+  //   margin-bottom: 100px;
+  //   padding-bottom: 100px;
 
   /* for Firefox */
   min-height: 0;
