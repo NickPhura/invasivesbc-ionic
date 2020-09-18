@@ -1,18 +1,19 @@
-import React from 'react';
-import { Switch, Redirect } from 'react-router-dom';
-import Home from 'features/home/Home';
 import Login from 'features/account/Login';
-import AccessDenied from 'pages/misc/AccessDenied';
-import AppRoute from 'utils/AppRoute';
-import PublicLayout from 'layouts/PublicLayout';
-import AuthLayout from 'layouts/AuthLayout';
-import { NotFoundPage } from 'pages/misc/NotFoundPage';
 import { LogoutPage } from 'features/account/Logout';
+import HomeRouter from 'features/home/HomeRouter';
+import AuthLayout from 'layouts/AuthLayout';
+import PublicLayout from 'layouts/PublicLayout';
+import AccessDenied from 'pages/misc/AccessDenied';
+import { NotFoundPage } from 'pages/misc/NotFoundPage';
+import React from 'react';
+import { Redirect, Switch } from 'react-router-dom';
+import AppRoute from 'utils/AppRoute';
 
 const AppRouter: React.FC = () => {
   const getTitle = (page: string) => {
     return `InvasivesBC - ${page}`;
   };
+
   return (
     <Switch>
       <Redirect exact from="/" to="/login" />
@@ -28,7 +29,7 @@ const AppRouter: React.FC = () => {
         title={getTitle('Page Not Found')}
         component={NotFoundPage}
         layout={PublicLayout}></AppRoute>
-      <AppRoute protected path="/home" component={Home} layout={AuthLayout} title={getTitle('Home')} />
+      <AppRoute protected path="/home" component={HomeRouter} layout={AuthLayout} title={getTitle('Home')} />
       <AppRoute title="*" path="*" component={() => <Redirect to="/page-not-found" />} />
     </Switch>
   );

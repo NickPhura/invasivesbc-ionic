@@ -9,7 +9,6 @@ export const DatabaseContextProvider: React.FC = (props) => {
 
   const setupDatabase = async () => {
     if (database) {
-      // database already exists
       return;
     }
 
@@ -19,31 +18,41 @@ export const DatabaseContextProvider: React.FC = (props) => {
       RxDB.addRxPlugin(require('pouchdb-adapter-cordova-sqlite')); // mobile adapter
 
       db = await RxDB.createRxDatabase({
-        name: 'mydatabase',
+        name: 'invasivesbc',
         adapter: 'cordova-sqlite', // mobile adapter
         pouchSettings: {
           location: 'default'
         },
-        ignoreDuplicate: true
+        multiInstance: false
       });
     } else {
       RxDB.addRxPlugin(require('pouchdb-adapter-indexeddb')); // browser adapter
 
       db = await RxDB.createRxDatabase({
-        name: 'mydatabase',
+        name: 'invasivesbc',
         adapter: 'indexeddb', // browser adapter
-        ignoreDuplicate: true
+        multiInstance: false
       });
     }
 
     setDatabase(db);
+
+    console.log('1====================');
+    console.log(db);
+    console.log('2====================');
+    console.log(db.storage);
+    console.log('3====================');
+    console.log(db.pouchSettings);
+    console.log('4====================');
+    console.log(db.options);
+    console.log('5====================');
+    console.log(db.collections);
+    console.log('6====================');
   };
 
   useEffect(() => {
     setupDatabase();
-
-    // TODO return database cleanup here?
-  }, [setupDatabase]);
+  });
 
   return <DatabaseContext.Provider value={database}>{props.children}</DatabaseContext.Provider>;
 };

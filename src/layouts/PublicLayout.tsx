@@ -10,9 +10,10 @@ import './PublicLayout.scss';
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   publicLayoutRoot: {
-    height: '100%',
-    width: '100%',
-    display: 'flex'
+    height: 'inherit',
+    width: 'inherit',
+    display: 'flex',
+    flexDirection: 'column'
   },
   toolbar: {
     paddingRight: 24 // keep right padding when drawer closed
@@ -25,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
     ...theme.mixins.toolbar
   },
   appBar: {
+    position: 'relative',
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
@@ -68,9 +70,10 @@ const useStyles = makeStyles((theme) => ({
       width: theme.spacing(9)
     }
   },
-  content: {
+  mainContent: {
     flex: 1,
-    marginTop: '64px',
+    width: 'inherit',
+    height: 'inherit',
     overflow: 'auto'
   },
   container: {
@@ -80,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
     display: 'flex',
-    overflow: 'auto',
+    overflow: 'hidden',
     flexDirection: 'column'
   },
   fixedHeight: {
@@ -91,39 +94,37 @@ const useStyles = makeStyles((theme) => ({
 const PublicLayout: React.FC = (props) => {
   const classes = useStyles();
 
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+  // const handleDrawerOpen = () => {
+  //   setOpen(true);
+  // };
 
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+  // const handleDrawerClose = () => {
+  //   setOpen(false);
+  // };
 
   return (
     <div className={classes.publicLayoutRoot}>
       <CssBaseline />
       <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
         <Toolbar className={classes.toolbar}>
-          <IconButton
+          {/* <IconButton
             edge="start"
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             className={clsx(classes.menuButton, open && classes.menuButtonHidden)}>
             <Menu />
-          </IconButton>
+          </IconButton> */}
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             Invasives BC
           </Typography>
         </Toolbar>
       </AppBar>
-      <Drawer
+      {/* <Drawer
         variant="permanent"
-        classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose)
-        }}
+        classes={{ paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose) }}
         open={open}>
         <div className={classes.toolbarIcon}>
           <IconButton onClick={handleDrawerClose}>
@@ -132,8 +133,8 @@ const PublicLayout: React.FC = (props) => {
         </div>
         <Divider />
         <SideMenu />
-      </Drawer>
-      <main className={classes.content}>
+      </Drawer> */}
+      <main className={classes.mainContent}>
         {/* <ErrorBoundary FallbackComponent={ErrorDialog}> */}
         {React.Children.map(props.children, (child: any) => {
           return React.cloneElement(child, { classes: classes });

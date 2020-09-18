@@ -1,6 +1,6 @@
 import { Container } from '@material-ui/core';
 import React from 'react';
-import FormContainer from '../../components/form/FormContainer';
+import FormContainer from 'components/form/FormContainer';
 
 // react json schema form related:
 const schema = {
@@ -351,6 +351,7 @@ const uiSchema = {
 };
 
 interface IObservationProps {
+  id: number;
   classes?: any;
 }
 

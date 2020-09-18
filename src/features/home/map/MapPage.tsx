@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import { Container, makeStyles } from '@material-ui/core';
+import { Container, makeStyles, Theme } from '@material-ui/core';
 import React from 'react';
 import MapContainer from 'components/map/MapContainer';
 
-const useStyles = makeStyles((theme) => ({
-  container: {
+const useStyles = makeStyles((theme: Theme) => ({
+  mapContainer: {
     height: '100%'
   },
   map: {
@@ -21,7 +21,7 @@ const MapPage: React.FC<IMapProps> = (props) => {
   const classes = useStyles();
 
   return (
-    <Container className={clsx(props.classes.container, classes.container)}>
+    <Container className={clsx(classes.mapContainer, props.classes.container)}>
       <MapContainer classes={classes} />
     </Container>
   );
