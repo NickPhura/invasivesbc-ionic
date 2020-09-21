@@ -8,14 +8,14 @@ import {
   makeStyles,
   SvgIcon
 } from '@material-ui/core';
-import { Add, Assignment, Build, Visibility, HomeWork, SvgIconComponent, DeleteForever } from '@material-ui/icons';
+import { Add, Assignment, Build, DeleteForever, SvgIconComponent, Visibility } from '@material-ui/icons';
 import { DatabaseContext } from 'contexts/DatabaseContext';
 import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import * as RxDB from 'rxdb';
 
 const useStyles = makeStyles((theme) => ({
-  nested: {
+  subItem: {
     paddingLeft: '32px'
   }
 }));
@@ -85,11 +85,6 @@ const basicListItems: IListItem[] = [
   //   title: 'Map',
   //   url: '/activities/map',
   //   icon: Map
-  // },
-  // {
-  //   title: 'Admin',
-  //   url: '/activities/admin',
-  //   icon: Lock
   // }
 ];
 
@@ -106,41 +101,32 @@ const ActivitiesList: React.FC = (props) => {
   //   database.collections();
   // }, [database]);
 
-  const addNewForm = (listItem: IListItem, index: number) => {
-    const newListItems = [...listItems];
+  const addNewForm = (listItemIndex: number) => {
+    return setListItems((listItems) => {
+      let newSubItem = null;
+      switch (listItems[listItemIndex].title) {
+        case 'Observation':
+          newSubItem = newObservation();
+          break;
+        case 'Treatment':
+          newSubItem = newTreatment();
+          break;
+        case 'Monitoring':
+          newSubItem = newMonitoring();
+          break;
+      }
+      listItems[listItemIndex].subItems.push(newSubItem);
 
-    // get nnew sub item
-    let newSubItem = null;
-    switch (listItem.title) {
-      case 'Observation':
-        newSubItem = newObservation();
-        break;
-      case 'Treatment':
-        newSubItem = newTreatment();
-        break;
-      case 'Monitoring':
-        newSubItem = newMonitoring();
-        break;
-    }
-    // add sub item to parent item
-    listItem.subItems.push(newSubItem);
-
-    // update list
-    newListItems[index] = listItem;
-
-    setListItems(newListItems);
+      return listItems;
+    });
   };
 
-  const removeForm = (listItem, listItemIndex, subItemIndex) => {
-    const newListItems = [...listItems];
+  const removeForm = (listItemIndex: number, subItemIndex: number) => {
+    return setListItems((listItems) => {
+      listItems[listItemIndex].subItems.slice(subItemIndex, 1);
 
-    // remove item from subItem array
-    listItem.subItems.slice(subItemIndex, 1);
-
-    // update list
-    newListItems[listItemIndex] = listItem;
-
-    setListItems(newListItems);
+      return listItems;
+    });
   };
 
   return (
@@ -148,7 +134,7 @@ const ActivitiesList: React.FC = (props) => {
       {listItems.map((listItem, listItemIndex) => {
         return (
           <>
-            <ListItem button key={listItem.title} onClick={() => addNewForm(listItem, listItemIndex)}>
+            <ListItem button key={listItem.title} onClick={() => addNewForm(listItemIndex)}>
               <ListItemIcon>
                 <SvgIcon component={listItem.icon} />
               </ListItemIcon>
@@ -157,13 +143,13 @@ const ActivitiesList: React.FC = (props) => {
             {listItem.subItems.map((subItem, subItemIndex) => {
               return (
                 <List component="div" disablePadding>
-                  <ListItem button key={subItem.url} className={classes.nested}>
+                  <ListItem button key={subItem.url} className={classes.subItem}>
                     <ListItemIcon>
                       <SvgIcon component={subItem.icon} />
                     </ListItemIcon>
                     <ListItemText>{subItem.title}</ListItemText>
                     <ListItemSecondaryAction>
-                      <IconButton onClick={() => removeForm(listItem, listItemIndex, subItemIndex)}>
+                      <IconButton onClick={() => removeForm(listItemIndex, subItemIndex)}>
                         <DeleteForever />
                       </IconButton>
                     </ListItemSecondaryAction>
