@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import * as L from "leaflet";
-import "leaflet-draw";
-import "leaflet/dist/leaflet.css";
-import "leaflet-draw/dist/leaflet.draw.css";
+import React, { useEffect } from 'react';
+import * as L from 'leaflet';
+import 'leaflet-draw';
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-draw/dist/leaflet.draw.css';
 
 interface IMapContainerProps {
   classes?: any;
@@ -10,24 +10,24 @@ interface IMapContainerProps {
 
 const MapContainer: React.FC<IMapContainerProps> = (props) => {
   const renderMap = () => {
-    console.log("Map componentDidMount!");
+    console.log('Map componentDidMount!');
 
-    var map = L.map("map", { zoomControl: false }).setView([55, -128], 10);
+    var map = L.map('map', { zoomControl: false }).setView([55, -128], 10);
     // On init setup
 
-    L.control.zoom({ position: "bottomright" }).addTo(map);
+    L.control.zoom({ position: 'bottomright' }).addTo(map);
 
     const esriBase = L.tileLayer(
-      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
       {
-        maxZoom: 24,
+        maxZoom: 24
       }
     ).addTo(map);
 
     const bcBase = L.tileLayer(
-      "https://maps.gov.bc.ca/arcgis/rest/services/province/roads_wm/MapServer/tile/{z}/{y}/{x}",
+      'https://maps.gov.bc.ca/arcgis/rest/services/province/roads_wm/MapServer/tile/{z}/{y}/{x}',
       {
-        maxZoom: 24,
+        maxZoom: 24
       }
     ).addTo(map);
 
@@ -36,23 +36,23 @@ const MapContainer: React.FC<IMapContainerProps> = (props) => {
     map.addLayer(drawnItems);
 
     var drawControl = new L.Control.Draw({
-      position: "topright",
+      position: 'topright',
       draw: {
         marker: false,
-        circle: true,
+        circle: true
       },
       edit: {
-        featureGroup: drawnItems,
+        featureGroup: drawnItems
         // remove: true,
         // edit: true
-      },
+      }
     });
 
     map.addControl(drawControl);
 
     const baseLayers = {
-      "Esri Imagery": esriBase,
-      "BC Government": bcBase,
+      'Esri Imagery': esriBase,
+      'BC Government': bcBase
     };
 
     L.control.layers(baseLayers).addTo(map);
@@ -62,55 +62,55 @@ const MapContainer: React.FC<IMapContainerProps> = (props) => {
       map.setView([55, -128], 10);
     }, 1000);
 
-    map.on("draw:created", (feature) => {
+    map.on('draw:created', (feature) => {
       console.log(feature.layer.toGeoJSON());
       drawnItems.addLayer(feature.layer);
     });
 
-    map.on("draw:drawvertex", function (layerGroup) {
+    map.on('draw:drawvertex', function (layerGroup) {
       console.log(layerGroup);
     });
 
-    map.on("draw:drawstart", function (layerGroup) {
-      console.log("started");
+    map.on('draw:drawstart', function (layerGroup) {
+      console.log('started');
       console.log(layerGroup);
     });
 
-    map.on("draw:drawstop", function (layerGroup) {
-      console.log("stopped");
+    map.on('draw:drawstop', function (layerGroup) {
+      console.log('stopped');
       console.log(layerGroup);
     });
 
-    map.on("draw:deleted", function () {
-      console.log("deleted");
+    map.on('draw:deleted', function () {
+      console.log('deleted');
     });
 
-    map.on("draw:editstart", function () {
-      console.log("editstart");
+    map.on('draw:editstart', function () {
+      console.log('editstart');
     });
 
-    map.on("draw:editmove", function () {
-      console.log("editmove");
+    map.on('draw:editmove', function () {
+      console.log('editmove');
     });
 
-    map.on("draw:editresize", function () {
-      console.log("editresize");
+    map.on('draw:editresize', function () {
+      console.log('editresize');
     });
 
-    map.on("draw:editvertex", function () {
-      console.log("editvertex");
+    map.on('draw:editvertex', function () {
+      console.log('editvertex');
     });
 
-    map.on("draw:editstop", function () {
-      console.log("editstop");
+    map.on('draw:editstop', function () {
+      console.log('editstop');
     });
 
-    map.on("draw:deletestart", function () {
-      console.log("deletestart");
+    map.on('draw:deletestart', function () {
+      console.log('deletestart');
     });
 
-    map.on("draw:deletestop", function () {
-      console.log("deletestop");
+    map.on('draw:deletestop', function () {
+      console.log('deletestop');
     });
   };
 
